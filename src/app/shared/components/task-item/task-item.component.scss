@@ -1,0 +1,13 @@
+.icon:hover {
+  color: #1877f2;
+}
+
+.icon {
+  font-size: 1.5rem !important;
+}
+
+.my-custom-class {
+  --background: #222;
+  --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+  --backdrop-opacity: var(--ion-backdrop-opacity, 0.32);
+}

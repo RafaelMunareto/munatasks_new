@@ -1,0 +1,40 @@
+.hoje.tab-selected {
+  ion-icon,
+  ion-label {
+    color: var(--ion-color-primary) !important;
+    --ion-color-base: var(--ion-color-primary) !important;
+  }
+}
+.done.tab-selected {
+  ion-icon,
+  ion-label {
+    color: var(--ion-color-primary) !important;
+    --ion-color-base: var(--ion-color-primary) !important;
+  }
+}
+.programados.tab-selected {
+  ion-icon,
+  ion-label {
+    color: var(--ion-color-danger) !important;
+    --ion-color-base: var(--ion-color-danger) !important;
+  }
+}
+
+.sinalizados.tab-selected {
+  ion-icon,
+  ion-label {
+    color: var(--ion-color-warning) !important;
+    --ion-color-base: var(--ion-color-warning) !important;
+  }
+}
+.todos.tab-selected {
+  ion-icon,
+  ion-label {
+    color: var(--ion-color-dark) !important;
+    --ion-color-base: var(--ion-color-dark) !important;
+  }
+}
+
+label {
+  font-size: 70% !important;
+}

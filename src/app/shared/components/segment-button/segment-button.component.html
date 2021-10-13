@@ -1,0 +1,112 @@
+<ion-segment
+  mode='md'
+  scrollable
+  value="heart"
+  class='ion-padding'
+  style='padding-bottom: 0.5rem'
+  (ionChange)="segmentChanged($event)"
+  [value]="fase"
+  *ngFor='let conta of contador'
+>
+  <ion-segment-button
+    value='home'
+    id='segment-home'
+  >
+    <ion-icon name="home"></ion-icon>
+  </ion-segment-button>
+
+  <ion-segment-button
+    value="create"
+    id='segment-create'
+  >
+    <ion-tab-button class='create'>
+      <ion-icon
+        color='primary'
+        name="add-circle-outline"
+      ></ion-icon>
+      <ion-label>Novo</ion-label>
+    </ion-tab-button>
+  </ion-segment-button>
+
+  <ion-segment-button
+    value="hoje"
+    id='segment-hoje'
+  >
+    <ion-tab-button class='hoje'>
+      <ion-icon
+        color='primary'
+        name="calendar"
+      ></ion-icon>
+      <ion-label>Hoje</ion-label>
+      <ion-badge>{{ conta.hoje }}</ion-badge>
+    </ion-tab-button>
+  </ion-segment-button>
+
+  <ion-segment-button
+    value="abertos"
+    id='segment-programados'
+  >
+    <ion-tab-button class='programados'>
+      <ion-icon
+        color='success'
+        name="file-tray-full-outline"
+      ></ion-icon>
+      <ion-label>Abertos</ion-label>
+      <ion-badge>{{ conta.abertos }}</ion-badge>
+    </ion-tab-button>
+  </ion-segment-button>
+
+  <ion-segment-button
+    value="vencidos"
+    id='segment-vencidos'
+  >
+    <ion-tab-button class='vencidos'>
+      <ion-icon
+        color='danger'
+        name="hourglass-outline"
+      ></ion-icon>
+      <ion-label>Vencidos</ion-label>
+      <ion-badge>{{ conta.vencidos }}</ion-badge>
+    </ion-tab-button>
+  </ion-segment-button>
+
+  <ion-segment-button
+    value="sinalizados"
+    id='segment-sinalizados'
+  >
+    <ion-tab-button class='sinalizados'>
+      <ion-icon
+        color='warning'
+        name="flag-outline"
+      ></ion-icon>
+      <ion-label>Sinalizados</ion-label>
+      <ion-badge>{{ conta.sinalizados }}</ion-badge>
+    </ion-tab-button>
+  </ion-segment-button>
+
+  <ion-segment-button
+    value="finalizados"
+    id='segment-finalizados'
+  >
+    <ion-tab-button class='check'>
+      <ion-icon
+        color='primary'
+        name="checkmark-circle-outline"
+      ></ion-icon>
+      <ion-label>Finalizados</ion-label>
+      <ion-badge>{{ conta.finalizados }}</ion-badge>
+    </ion-tab-button>
+  </ion-segment-button>
+
+  <ion-segment-button
+    value="todos"
+    id='segment-todos'
+  >
+    <ion-tab-button class='todos'>
+      <ion-icon name="archive-outline"></ion-icon>
+      <ion-label>Todos</ion-label>
+      <ion-badge>{{ conta.todos }}</ion-badge>
+    </ion-tab-button>
+  </ion-segment-button>
+
+</ion-segment>

@@ -1,0 +1,351 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import "~@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+//overlay
+
+.action-sheet-wrapper.sc-ion-action-sheet-md {
+  margin-bottom: 1rem !important;
+}
+
+.icon-7em {
+  font-size: 7em !important;
+}
+.icon-2em {
+  font-size: 2em !important;
+}
+.pointer {
+  cursor: pointer !important;
+}
+.bold {
+  font-weight: bold !important;
+}
+.box-shadown-light {
+  box-shadow: rgb(0 0 0 / 12%) 0px 2px 6px !important;
+}
+
+//flex-box
+.d-flex {
+  display: flex !important;
+}
+.justify-content-center {
+  display: flex !important;
+  justify-content: center !important;
+}
+.justify-content-start {
+  display: flex !important;
+  justify-content: flex-start !important;
+}
+.justify-content-end {
+  display: flex !important;
+  justify-content: flex-end !important;
+}
+.justify-content-around {
+  display: flex !important;
+  justify-content: space-around !important;
+}
+.justify-content-between {
+  display: flex !important;
+  justify-content: space-between !important;
+}
+.align-items-center {
+  align-items: center !important;
+}
+.align-items-baseline {
+  align-items: baseline !important;
+}
+.flex-column {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+//sizes
+.size40 {
+  font-size: 40% !important;
+}
+.size50 {
+  font-size: 50% !important;
+}
+.size60 {
+  font-size: 60% !important;
+}
+.size70 {
+  font-size: 70% !important;
+}
+.size80 {
+  font-size: 80% !important;
+}
+.size90 {
+  font-size: 90% !important;
+}
+.size100 {
+  font-size: 100% !important;
+}
+.size110 {
+  font-size: 110% !important;
+}
+.size120 {
+  font-size: 120% !important;
+}
+.size130 {
+  font-size: 130% !important;
+}
+.size140 {
+  font-size: 140% !important;
+}
+.size150 {
+  font-size: 150% !important;
+}
+.size160 {
+  font-size: 160% !important;
+}
+.size170 {
+  font-size: 170% !important;
+}
+.size180 {
+  font-size: 180% !important;
+}
+.size190 {
+  font-size: 190% !important;
+}
+.size200 {
+  font-size: 200% !important;
+}
+
+//padings e margins
+.pading01 {
+  padding: 0.1rem !important;
+}
+.pading02 {
+  padding: 0.2rem !important;
+}
+.pading03 {
+  padding: 0.3rem !important;
+}
+.pading04 {
+  padding: 0.4rem !important;
+}
+.pading05 {
+  padding: 0.5rem !important;
+}
+.pading06 {
+  padding: 0.6rem !important;
+}
+.pading07 {
+  padding: 0.7rem !important;
+}
+.pading08 {
+  padding: 0.8rem !important;
+}
+.pading09 {
+  padding: 0.9rem !important;
+}
+.pading1 {
+  padding: 1rem !important;
+}
+.pading2 {
+  padding: 2rem !important;
+}
+.padding-left-05 {
+  padding-left: 0.5rem !important;
+}
+.padding-left-1 {
+  padding-left: 1rem !important;
+}
+.padding-left-2 {
+  padding-left: 2rem !important;
+}
+.padding-left-3 {
+  padding-left: 3rem !important;
+}
+.padding-right-05 {
+  padding-right: 0.5rem !important;
+}
+.padding-right-1 {
+  padding-right: 1rem !important;
+}
+.padding-right-2 {
+  padding-right: 2rem !important;
+}
+.padding-right-3 {
+  padding-right: 3rem !important;
+}
+.padding-top-05 {
+  padding-top: 0.5rem !important;
+}
+.padding-top-1 {
+  padding-top: 1rem !important;
+}
+.padding-top-2 {
+  padding-top: 2rem !important;
+}
+.padding-top-3 {
+  padding-top: 3rem !important;
+}
+.padding-bottom-05 {
+  padding-bottom: 0.5rem !important;
+}
+.padding-bottom-1 {
+  padding-bottom: 1rem !important;
+}
+.padding-bottom-2 {
+  padding-bottom: 2rem !important;
+}
+.padding-bottom-3 {
+  padding-bottom: 3rem !important;
+}
+.margin-left-05 {
+  margin-left: 0.5rem !important;
+}
+.margin-left-1 {
+  margin-left: 1rem !important;
+}
+.margin-left-2 {
+  margin-left: 2rem !important;
+}
+.margin-left-3 {
+  margin-left: 3rem !important;
+}
+.margin-right-05 {
+  margin-right: 0.5rem !important;
+}
+.margin-right-1 {
+  margin-right: 1rem !important;
+}
+.margin-right-2 {
+  margin-right: 2rem !important;
+}
+.margin-right-3 {
+  margin-right: 3rem !important;
+}
+.margin-top-05 {
+  margin-top: 0.5rem !important;
+}
+.margin-top-1 {
+  margin-top: 1rem !important;
+}
+.margin-top-2 {
+  margin-top: 2rem !important;
+}
+.margin-top-3 {
+  margin-top: 3rem !important;
+}
+.margin-bottom-05 {
+  margin-bottom: 0.5rem !important;
+}
+.margin-bottom-1 {
+  margin-bottom: 1rem !important;
+}
+.margin-bottom-2 {
+  margin-bottom: 2rem !important;
+}
+.margin-bottom-3 {
+  margin-bottom: 3rem !important;
+}
+
+//borders
+.border-radius-10 {
+  border-radius: 10px !important;
+}
+.border-radius-20 {
+  border-radius: 20px !important;
+}
+.border-radius-30 {
+  border-radius: 30px !important;
+}
+.border-radius-40 {
+  border-radius: 40px !important;
+}
+.border-radius-50 {
+  border-radius: 50px !important;
+}
+.border-radius-60 {
+  border-radius: 60px !important;
+}
+.border-radius-70 {
+  border-radius: 70px !important;
+}
+.border-radius-80 {
+  border-radius: 80px !important;
+}
+.border-radius-90 {
+  border-radius: 90px !important;
+}
+.border-radius-100 {
+  border-radius: 100px !important;
+}
+
+//animations
+
+.pulse {
+  display: block;
+  cursor: pointer;
+  animation: pulse 2s infinite;
+}
+.pulse:hover {
+  animation: none;
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0.4);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(204, 169, 44, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+  }
+}
+@keyframes pulse {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0.4);
+    box-shadow: 0 0 0 0 rgba(204, 169, 44, 0.4);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(204, 169, 44, 0);
+    box-shadow: 0 0 0 10px rgba(204, 169, 44, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+    box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+  }
+}
+
+//alerts
+.my-custom-class .alert-head {
+  background: var(--ion-color-primary) !important;
+  margin-bottom: 1rem !important;
+}
+
+.my-custom-class .alert-head .alert-title {
+  color: var(--ion-color-light);
+  font-weight: bold !important;
+}
+
+.my-custom-class .alert-head .alert-sub-title {
+  color: var(--ion-color-light);
+}

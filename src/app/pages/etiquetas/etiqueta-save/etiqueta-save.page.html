@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot='start'>
+      <ion-back-button defaultHref="/tasks"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ pageTitle }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <form
+    class='ion-padding'
+    [formGroup]="etiquetaForm"
+    (submit)="onSubmit()"
+  >
+    <ion-item>
+      <ion-input
+        name='nome'
+        placeholder='Etiqueta'
+        formControlName='nome'
+        [autofocus]='true'
+      ></ion-input>
+      <app-validator-note [form-control]="$any(etiquetaForm.get('nome'))"></app-validator-note>
+    </ion-item>
+
+    <ion-row>
+      <ion-col size='12'>
+        <ion-select
+          placeholder="Selecione uma cor"
+          interface="action-sheet"
+          okText="OK"
+          cancelText="Cancelar"
+          class="ion-padding select"
+          formControlName='cor'
+          appEtiquetasColors
+        >
+          <ion-select-option value="danger">Vermelho</ion-select-option>
+          <ion-select-option value="warning">Amarelo</ion-select-option>
+          <ion-select-option value="success">Verde</ion-select-option>
+          <ion-select-option value="secondary">Azul claro</ion-select-option>
+          <ion-select-option value="primary">Azul</ion-select-option>
+          <ion-select-option value="medium">Cinza</ion-select-option>
+          <ion-select-option value="dark">Preto</ion-select-option>
+        </ion-select>
+      </ion-col>
+
+    </ion-row>
+
+    <ion-button
+      [disabled]="etiquetaForm.invalid"
+      expand="block"
+      type="submit"
+      color='medium'
+    >
+      Salvar
+    </ion-button>
+
+  </form>
+</ion-content>

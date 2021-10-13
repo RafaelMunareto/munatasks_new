@@ -1,0 +1,103 @@
+<app-header-back
+  title='Lista de tarefas'
+  route='/tasks'
+></app-header-back>
+
+<ion-content padding>
+  <ion-text [color]='color'>
+    <h1 class='ion-padding-start bold'>{{ faseParam | titlecase}}</h1>
+  </ion-text>
+  <ion-toolbar>
+    <form
+      class='ion-padding'
+      [formGroup]="taskForm"
+    >
+      <ion-select
+        (ionChange)="changeSelectResponsavel($event)"
+        [placeholder]="responsavelParam | titlecase"
+        interface="action-sheet"
+        okText="OK"
+        cancelText="Cancelar"
+        formControlName='responsavel'
+        class="ion-padding select"
+      >
+        <ion-select-option
+          class='primary'
+          value="todos"
+        >
+          TODOS RESPONSÁVEIS
+        </ion-select-option>
+        <ion-select-option
+          *ngFor='let responsavel of responsaveis'
+          value="{{ responsavel.nome }}"
+        >
+          {{ responsavel.nome }}
+        </ion-select-option>
+      </ion-select>
+      <ion-select
+        (ionChange)="changeSelect($event)"
+        [placeholder]="etiquetaParam | titlecase"
+        interface="action-sheet"
+        okText="OK"
+        cancelText="Cancelar"
+        class="ion-padding select"
+        formControlName='tipo'
+        [appTaskTipos]='etiquetas'
+      >
+        <ion-select-option
+          class='primary'
+          value="todos"
+        >
+          TODOS
+        </ion-select-option>
+        <ion-select-option
+          *ngFor='let etiqueta of etiquetas'
+          value="{{ etiqueta.nome }}"
+        >
+          <ion-text>
+
+            <ion-badge [color]='etiqueta.cor'>{{ etiqueta.nome | titlecase }}</ion-badge>
+          </ion-text>
+        </ion-select-option>
+      </ion-select>
+    </form>
+    <ion-searchbar
+      [(ngModel)]="filtro"
+      animated="true"
+      mode='ios'
+      placeholder='Procurar'
+    ></ion-searchbar>
+  </ion-toolbar>
+
+  <ion-list
+    fullscreen
+    *ngIf="(tasks) as tasks; else skeleton"
+  >
+    <ng-container *ngIf="tasks.length > 0; else noTasks">
+      <app-task-item
+        *ngFor="let task of filteredTasks | filter: filtro"
+        [task]="task"
+        (update)="onUpdate($event)"
+        (done)="onDone($event)"
+        (hoje)="onHoje($event)"
+        (sinalizada)="onSinalizada($event)"
+        [color]='corEtiqueta(task.tipo)'
+      >
+      </app-task-item>
+
+    </ng-container>
+
+    <ng-template #noTasks>
+      <app-no-tasks msg='Nenhuma tarefa ainda...'></app-no-tasks>
+    </ng-template>
+
+  </ion-list>
+
+  <ng-template #skeleton>
+    <app-skeleton-list
+      [qtd]='5'
+      heigth='5rem'
+    ></app-skeleton-list>
+  </ng-template>
+
+</ion-content>

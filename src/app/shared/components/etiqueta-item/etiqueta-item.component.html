@@ -1,0 +1,36 @@
+<ion-item-sliding #sliding>
+
+  <ion-item>
+    <ion-badge [color]='etiqueta.cor'>{{ etiqueta.nome | titlecase }}</ion-badge>
+    <ion-note slot="end">
+      <ion-icon
+        (click)='detail.emit(etiqueta)'
+        name="arrow-forward-outline"
+        class='pointer'
+        color='primary'
+      ></ion-icon>
+    </ion-note>
+  </ion-item>
+
+  <ion-item-options side='start'>
+    <ion-item-option
+      color='danger'
+      (click)='delete.emit(etiqueta); sliding.close()'
+    >
+      <ion-icon
+        slot='icon-only'
+        name='trash'
+      ></ion-icon>
+    </ion-item-option>
+  </ion-item-options>
+
+  <ion-item-options side='end'>
+    <ion-item-option (click)="update.emit(etiqueta); sliding.close()">
+      <ion-icon
+        slot="icon-only"
+        name='create'
+      ></ion-icon>
+    </ion-item-option>
+  </ion-item-options>
+
+</ion-item-sliding>

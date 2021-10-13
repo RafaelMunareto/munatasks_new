@@ -1,0 +1,98 @@
+<ion-item-sliding #sliding>
+
+  <ion-item [@slideInOut]="isOpen ? 'in' : 'out'">
+
+    <ion-row>
+      <ion-col
+        size='12'
+        class='padding-right-1'
+      >
+        <ion-icon
+          name="flag-sharp"
+          color='warning padding-right-05'
+          *ngIf='task.sinalizado'
+        ></ion-icon>
+        <ion-badge [color]='color'>{{ tipo | titlecase }}</ion-badge>
+      </ion-col>
+
+      <ion-col size='12'>
+
+        <ion-text class='size90'>
+          {{ task.title }}
+          <div class="d-flex justify-content-start">
+            <div *ngFor='let responsavel of task.responsavel'>
+              <div style='margin-right: 0.5rem; margin-top:0.3rem'>
+                <ion-badge color='medium'>{{ responsavel | titlecase }}</ion-badge>
+              </div>
+            </div>
+          </div>
+        </ion-text>
+        <ion-row class='ion-justify-content-between'>
+          <ion-label>
+            <p class='size80'>{{ task.data | date: 'd/M/y H:m' }}</p>
+          </ion-label>
+        </ion-row>
+      </ion-col>
+
+    </ion-row>
+
+    <ion-toggle
+      slot='start'
+      color='primary'
+      [checked]='task.done'
+      (ionChange)='done.emit(task); onToggle()'
+      (click)='$event.stopPropagation()'
+    ></ion-toggle>
+    <ion-note
+      slot="end"
+      class='pointer'
+      (click)='update.emit(task)'
+    >
+      <ion-icon
+        class='icon'
+        name="information-circle-sharp"
+      ></ion-icon>
+    </ion-note>
+  </ion-item>
+
+  <ion-item-options side='start'>
+    <ion-item-option
+      color='danger'
+      (click)='onDelete(task); sliding.close()'
+    >
+      <ion-icon
+        slot='icon-only'
+        name='trash'
+      ></ion-icon>
+    </ion-item-option>
+    <ion-item-option
+      color='warning'
+      (click)='sinalizada.emit(task); sliding.close();'
+    >
+      <ion-icon
+        slot='icon-only'
+        style='color:white'
+        name='flag-sharp'
+      ></ion-icon>
+    </ion-item-option>
+  </ion-item-options>
+
+  <ion-item-options side='end'>
+    <ion-item-option
+      color='success'
+      (click)="hoje.emit(task); sliding.close()"
+    >
+      <ion-icon
+        slot="icon-only"
+        name='calendar'
+      ></ion-icon>
+    </ion-item-option>
+    <ion-item-option (click)="update.emit(task); sliding.close()">
+      <ion-icon
+        slot="icon-only"
+        name='create'
+      ></ion-icon>
+    </ion-item-option>
+  </ion-item-options>
+
+</ion-item-sliding>

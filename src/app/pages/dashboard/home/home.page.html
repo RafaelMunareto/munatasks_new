@@ -1,0 +1,135 @@
+<app-menu-toggle title="Home"></app-menu-toggle>
+
+<ion-content>
+
+  <div *ngIf="(etiquetas$ | async); else skeletonContador">
+    <ion-grid
+      class='ion-margin-top ion-margin-bottom'
+      *ngFor='let conta of contador'
+    >
+      <ion-row class='ion-justify-content-center'>
+        <app-card-icone-contador
+          label='Hoje'
+          color='primary'
+          icone='calendar-outline'
+          (direct)="onDirect('hoje')"
+          [data]='conta.hoje'
+        ></app-card-icone-contador>
+        <app-card-icone-contador
+          label='Abertos'
+          color='success'
+          icone='file-tray-full-outline'
+          [data]='conta.abertos'
+          (direct)="onDirect('abertos')"
+        ></app-card-icone-contador>
+      </ion-row>
+      <ion-row class='ion-justify-content-center'>
+        <app-card-icone-contador
+          label='Sinalizados'
+          color='warning'
+          icone='flag-outline'
+          [data]='conta.sinalizados'
+          (direct)="onDirect('sinalizados')"
+        ></app-card-icone-contador>
+        <app-card-icone-contador
+          label='Finalizados'
+          color='primary'
+          icone='checkmark-circle-outline'
+          [data]='conta.finalizados'
+          (direct)="onDirect('finalizados')"
+        ></app-card-icone-contador>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <ng-template #skeletonContador>
+    <div class='flex-column padding-top-2'>
+      <div class='justify-content-center'>
+        <div class="custom-skeleton padding-right-1">
+          <ion-skeleton-text
+            animated
+            style="width: 10rem; height:5.5rem; border-radius:10px"
+          ></ion-skeleton-text>
+        </div>
+        <div class="custom-skeleton">
+          <ion-skeleton-text
+            animated
+            style="width: 10rem; height:5.5rem; border-radius:10px"
+          ></ion-skeleton-text>
+        </div>
+      </div>
+      <div class='justify-content-center '>
+        <div class="custom-skeleton padding-right-1">
+          <ion-skeleton-text
+            animated
+            style="width: 10rem; height:5.5rem; border-radius:10px"
+          ></ion-skeleton-text>
+        </div>
+        <div class="custom-skeleton">
+          <ion-skeleton-text
+            animated
+            style="width: 10rem; height:5.5rem; border-radius:10px"
+          ></ion-skeleton-text>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ion-grid>
+    <ion-row class="justify-content-between align-items-baseline">
+      <ion-text color="primary">
+        <h1 class='ion-padding-start bold'>Etiquetas</h1>
+      </ion-text>
+
+      <ion-chip
+        routerLink="/etiquetas/create"
+        routerDirection="forward"
+        color="primary"
+        class='pointer'
+      >
+        <ion-icon
+          name="add-circle-outline"
+          color="primary"
+        ></ion-icon>
+        <ion-label color='primary'>Nova etiqueta</ion-label>
+      </ion-chip>
+
+    </ion-row>
+  </ion-grid>
+
+  <ion-toolbar>
+    <ion-searchbar
+      [(ngModel)]="filtro"
+      animated="true"
+      mode='ios'
+      placeholder='Procurar'
+    ></ion-searchbar>
+  </ion-toolbar>
+
+  <ion-list fullscreen>
+    <ng-container *ngIf="(etiquetas$ | async) as etiquetas; else skeleton">
+
+      <div *ngIf="etiquetas.length > 0; else noTags">
+        <app-etiqueta-item
+          *ngFor="let etiqueta of etiquetas | filter: filtro"
+          [etiqueta]="etiqueta"
+          (update)="onUpdate($event)"
+          (delete)="onDelete($event)"
+          (detail)="onDetail($event)"
+          class="animation"
+        >
+        </app-etiqueta-item>
+      </div>
+    </ng-container>
+
+    <ng-template #noTags>
+      <app-no-tasks msg='Nenhuma etiqueta ainda...'></app-no-tasks>
+    </ng-template>
+
+  </ion-list>
+
+  <ng-template #skeleton>
+    <app-skeleton-list></app-skeleton-list>
+  </ng-template>
+
+</ion-content>

@@ -1,0 +1,8 @@
+{
+  "name": "MunaTasks",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}

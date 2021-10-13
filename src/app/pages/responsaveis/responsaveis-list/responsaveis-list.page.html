@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot='start'>
+      <ion-back-button defaultHref="/tasks"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot='end'>
+      <ion-button
+        routerLink="create"
+        routerDirection="forward"
+      >
+        <ion-icon
+          slot="icon-only"
+          name="add-circle-outline"
+        ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Responsáveis</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-toolbar class='ion-padding-top'>
+    <ion-searchbar
+      [(ngModel)]="filtro"
+      animated="true"
+      mode='ios'
+      placeholder='Procurar'
+    ></ion-searchbar>
+  </ion-toolbar>
+
+  <ion-list
+    fullscreen
+    *ngIf="(responsaveis$ | async) as responsaveis"
+  >
+    <ng-container *ngIf="responsaveis.length > 0; else noTags">
+      <app-responsaveis-item
+        *ngFor="let responsavel of responsaveis | filter: filtro"
+        [responsaveis]="responsavel"
+        (update)="onUpdate($event)"
+        (delete)="onDelete($event)"
+      >
+      </app-responsaveis-item>
+
+    </ng-container>
+
+    <ng-template #noTags>
+      <ion-item lines="none">Nenhum Responsável ainda...</ion-item>
+    </ng-template>
+
+  </ion-list>
+
+</ion-content>

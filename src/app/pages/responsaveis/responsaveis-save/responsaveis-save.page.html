@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot='start'>
+      <ion-back-button defaultHref="/responsaveis"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ pageTitle }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <form
+    class='ion-padding'
+    [formGroup]="responsavelForm"
+    (submit)="onSubmit()"
+  >
+    <ion-item>
+      <ion-input
+        name='nome'
+        placeholder='Responsável'
+        formControlName='nome'
+        [autofocus]='true'
+      ></ion-input>
+      <app-validator-note [form-control]="$any(responsavelForm.get('nome'))"></app-validator-note>
+    </ion-item>
+
+    <ion-button
+      [disabled]="responsavelForm.invalid"
+      expand="block"
+      type="submit"
+      color='medium'
+    >
+      Salvar
+    </ion-button>
+
+  </form>
+</ion-content>

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">MunaTasks</string>
+    <string name="title_activity_main">MunaTasks</string>
+    <string name="package_name">io.munatasks.starter</string>
+    <string name="custom_url_scheme">io.munatasks.starter</string>
+</resources>

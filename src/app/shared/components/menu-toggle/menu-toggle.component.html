@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot='start'>
+      <ion-menu-toggle [menu]='menu'>
+        <ion-button>
+          <ion-icon
+            slot='icon-only'
+            name='menu'
+          ></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+    <ion-title>{{ title }}</ion-title>
+    <app-logout-button
+      slot='end'
+      menu='main-menu'
+    ></app-logout-button>
+  </ion-toolbar>
+</ion-header>

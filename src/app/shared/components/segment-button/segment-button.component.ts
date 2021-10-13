@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable prefer-const */
 import { NavigationEnd, Router } from '@angular/router';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { AlertController, NavController } from '@ionic/angular';
@@ -151,14 +153,14 @@ export class SegmentButtonComponent implements OnInit {
   }
 
   async notifications(task: Tasks) {
-    this.localNotifications.schedule({
-      id: task.id,
-      text: task.title,
-      data: { secret: task.id },
-      icon: 'alert-circle-outline',
-      smallIcon: 'alert-circle-outline',
-      led: 'FF0000',
-    });
+    // this.localNotifications.schedule({
+    //   id: task.id,
+    //   text: task.title,
+    //   data: { secret: task.id },
+    //   icon: 'alert-circle-outline',
+    //   smallIcon: 'alert-circle-outline',
+    //   led: 'FF0000',
+    // });
   }
   async simpleNotif(tasks: Tasks[]) {
     if (tasks !== undefined) {

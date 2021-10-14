@@ -107,7 +107,6 @@
         <ion-item  *ngFor="let responsavel of responsaveis">
           <ion-toggle
             slot='start'
-            [ngClass]='smooth'
             color='primary'
             [checked]='povoaChecked(responsavel.nome)'
             (ionChange)='toogle($event, responsavel.nome)'

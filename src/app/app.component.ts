@@ -26,7 +26,7 @@ export class AppComponent {
     private etiquetasService: EtiquetasService,
     private responsavelService: ResponsavelService,
     private taskServices: TasksService,
-    private store: Store<any>
+    private store: Store<any>,
   ) {
     this.initializeApp();
   }

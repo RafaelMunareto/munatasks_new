@@ -13,6 +13,7 @@ import { HeaderBackModule } from './header-back/header-back.module';
 import { ResponsaveisItemModule } from './responsaveis-item/responsaveis-item.module';
 import { SkeletonListModule } from './skeleton-list/skeleton-list.module';
 import { NoTasksModule } from './no-tasks/no-tasks.module';
+import { ExpandableModule } from './expandable/expandable.module';
 
 @NgModule({
   imports: [
@@ -28,7 +29,8 @@ import { NoTasksModule } from './no-tasks/no-tasks.module';
     ResponsaveisItemModule,
     SegmentButtonModule,
     SkeletonListModule,
-    NoTasksModule
+    NoTasksModule,
+    ExpandableModule
   ],
   exports: [
     TaskItemModule,
@@ -43,7 +45,8 @@ import { NoTasksModule } from './no-tasks/no-tasks.module';
     ResponsaveisItemModule,
     SegmentButtonModule,
     SkeletonListModule,
-    NoTasksModule
+    NoTasksModule,
+    ExpandableModule
   ],
 })
 export class ComponentsModule {}

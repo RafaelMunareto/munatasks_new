@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -6,7 +7,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { LoadingController, NavController } from '@ionic/angular';
+import {
+  AvailableResult,
+  BiometryType,
+  NativeBiometric,
+} from 'capacitor-native-biometric';
 
 import { AuthService } from 'src/app/core/services/auth.service';
 import { AuthProvider } from 'src/app/core/services/auth.types';
@@ -21,6 +27,8 @@ import { OverlayService } from '../../../core/services/overlay.service';
 export class LoginPage implements OnInit {
   authForm: FormGroup;
   authProviders = AuthProvider;
+  digitalChange = false;
+
 
   configs = {
     isSignIn: true,
@@ -43,7 +51,7 @@ export class LoginPage implements OnInit {
     private authService: AuthService,
     private navCtrl: NavController,
     private activeRoute: ActivatedRoute,
-    private overlayService: OverlayService
+    private overlayService: OverlayService,
   ) {}
 
   ngOnInit() {
@@ -101,6 +109,54 @@ export class LoginPage implements OnInit {
     } finally {
       loading.dismiss();
     }
+  }
+
+  setCredential(event) {
+   this.digitalChange = event.detail.checked;
+    NativeBiometric.setCredentials({
+      username: this.authForm.get('email').value,
+      password:  this.authForm.get('password').value,
+      server: 'http://www.munatasks.com',
+    }).then().finally( () => this.digitalChange = true);
+  }
+
+  deleteCredential() {
+    NativeBiometric.deleteCredentials({
+      server: 'http://www.munatasks.com',
+    }).then(()=> {
+      this.overlayService.toast({
+        message: 'Login e senha deletados!',
+      });
+    });
+  }
+
+
+  async checkCredential(provider: AuthProvider) {
+     const loading = await this.overlayService.loading();
+    NativeBiometric.isAvailable().then((result: AvailableResult) => {
+      const isAvailable = result.isAvailable;
+       const isFaceId=result.biometryType===BiometryType.FACE_ID;
+      if (isAvailable) {
+
+        NativeBiometric.getCredentials({
+          server: 'http://www.munatasks.com',
+        }).then((credentials) => {
+            console.log(credentials.username);
+            this.authService.authenticate({
+              isSignIn: this.configs.isSignIn,
+              user: {email: credentials.username, password: credentials.password},
+              provider,
+            });
+            this.navCtrl.navigateForward(
+              this.activeRoute.snapshot.queryParamMap.get('redirect') || '/tasks'
+            );
+           }).catch(async (err) => {
+              await this.overlayService.toast({
+                message: err.message,
+              });
+            });
+        }
+    }).finally(() => loading.dismiss());
   }
 
   private createForm(): void {

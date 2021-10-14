@@ -9,16 +9,18 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { take } from 'rxjs/operators';
 import * as moment from 'moment';
 
+
 import { TasksService } from '../services/tasks.service';
 import { OverlayService } from '../../../../core/services/overlay.service';
 import { EtiquetasService } from '../../../etiquetas/services/etiquetas.service';
 import { select, Store } from '@ngrx/store';
 import { CompletoModel } from 'src/app/core/ngrx/models/completo.model';
-import * as firebase from 'firebase';
+
 
 @Component({
   templateUrl: './task-save.page.html',
   styleUrls: ['./task-save.page.scss'],
+
 })
 export class TaskSavePage {
   pageTitle = '...';
@@ -31,6 +33,8 @@ export class TaskSavePage {
   responsaveis: any[] = [];
   responsavel: any[] = [];
   responsaveisTask: any;
+  accordionExpanded = false;
+  isOpen = true;
 
   constructor(
     private fb: FormBuilder,
@@ -132,6 +136,16 @@ export class TaskSavePage {
 
   get title(): any {
     return this.taskForm.get('title');
+  }
+
+  toggleAccordion(event: any) {
+    this.accordionExpanded = this.accordionExpanded === false;
+    if(event.detail.checked === true){
+      this.isOpen = false;
+    }else{
+      this.isOpen = true;
+    }
+
   }
 
   private createForm() {

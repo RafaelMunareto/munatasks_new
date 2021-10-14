@@ -1,5 +1,6 @@
 import { SharedModule } from '../../../shared/shared.module';
 import { NgModule } from '@angular/core';
+import { TouchID } from '@ionic-native/touch-id';
 
 import { LoginPageRoutingModule } from './login-routing.module';
 import { LoginPage } from './login.page';

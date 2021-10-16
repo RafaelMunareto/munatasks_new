@@ -94,29 +94,21 @@
       </ion-item>
     </div>
 
-    <ion-toolbar *ngIf='responsaveis.length > 0' class='ion-padding-bottom'>
-
-      <ion-item>
-        <ion-label>Responsável</ion-label>
-        <ion-toggle  (ionChange)="toggleAccordion($event)" ></ion-toggle>
-      </ion-item>
-
-    </ion-toolbar>
-
-    <app-expandable [isOpen]='isOpen' [expandHeight]="250" [expanded]="accordionExpanded">
-        <ion-item  *ngFor="let responsavel of responsaveis">
-          <ion-toggle
-            slot='start'
-            color='primary'
-            [checked]='povoaChecked(responsavel.nome)'
-            (ionChange)='toogle($event, responsavel.nome)'
-          >
-            {{responsavel.nome}}
-          </ion-toggle>
-          <ion-label>{{responsavel.nome}}</ion-label>
-        </ion-item>
-    </app-expandable>
-
+    <div *ngIf='responsaveis.length > 0'>
+      <app-expandable>
+          <ion-item *ngFor="let responsavel of responsaveis">
+            <ion-toggle
+              slot='start'
+              color='primary'
+              [checked]='povoaChecked(responsavel.nome)'
+              (ionChange)='toogle($event, responsavel.nome)'
+            >
+              {{responsavel.nome}}
+            </ion-toggle>
+            <ion-label>{{responsavel.nome}}</ion-label>
+          </ion-item>
+      </app-expandable>
+    </div>
 
     <ion-button
       [disabled]="taskForm.invalid"

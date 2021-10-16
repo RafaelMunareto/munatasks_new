@@ -1,3 +1,4 @@
+/* eslint-disable quote-props */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import { Component, OnInit } from '@angular/core';
 import {
@@ -8,6 +9,8 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { LoadingController, NavController } from '@ionic/angular';
+import { BiometricWrapper } from '@ionic-native/biometric-wrapper/ngx';
+
 import {
   AvailableResult,
   BiometryType,
@@ -52,11 +55,17 @@ export class LoginPage implements OnInit {
     private navCtrl: NavController,
     private activeRoute: ActivatedRoute,
     private overlayService: OverlayService,
+    private biometricWrapper: BiometricWrapper
   ) {}
 
   ngOnInit() {
     this.createForm();
     const redirect = this.activeRoute.snapshot.queryParamMap.get('redirect');
+    // eslint-disable-next-line quote-props
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    this.biometricWrapper.activateIris({'PID_XML': '<pid-xml/>'})
+      .then((res: any) => console.log(res))
+      .catch((error: any) => console.log(error) );
   }
 
   get email(): any {
@@ -132,7 +141,6 @@ export class LoginPage implements OnInit {
 
 
   async checkCredential(provider: AuthProvider) {
-     const loading = await this.overlayService.loading();
     NativeBiometric.isAvailable().then((result: AvailableResult) => {
       const isAvailable = result.isAvailable;
        const isFaceId=result.biometryType===BiometryType.FACE_ID;
@@ -156,7 +164,7 @@ export class LoginPage implements OnInit {
               });
             });
         }
-    }).finally(() => loading.dismiss());
+    });
   }
 
   private createForm(): void {

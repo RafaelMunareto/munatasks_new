@@ -1,4 +1,5 @@
 export class TasksFunctions {
+
   corEtiqueta(tipo: string, etiquetas: any[]): string {
     try {
       const cor = etiquetas.find((element) => element.nome === tipo);
@@ -26,5 +27,24 @@ export class TasksFunctions {
         color = 'primary';
         break;
     }
+  }
+
+  async slideChanged(fase: string) {
+    const el = document.getElementById(`${fase}`);
+    await el?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+      inline: 'center',
+    });
+  }
+
+  scrollTo(idGrupo: string): void {
+    const idEl = document.getElementById(`${idGrupo}`);
+      const y = idEl.getBoundingClientRect().top + window.scrollY;
+      idEl.scroll({
+        top: y,
+        left: 100,
+        behavior: 'smooth'
+      });
   }
 }

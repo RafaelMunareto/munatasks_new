@@ -34,7 +34,6 @@ export class TaskSavePage {
   responsavel: any[] = [];
   responsaveisTask: any;
   accordionExpanded = false;
-  isOpen = true;
 
   constructor(
     private fb: FormBuilder,
@@ -136,16 +135,6 @@ export class TaskSavePage {
 
   get title(): any {
     return this.taskForm.get('title');
-  }
-
-  toggleAccordion(event: any) {
-    this.accordionExpanded = this.accordionExpanded === false;
-    if(event.detail.checked === true){
-      this.isOpen = false;
-    }else{
-      this.isOpen = true;
-    }
-
   }
 
   private createForm() {

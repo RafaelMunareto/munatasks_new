@@ -1,3 +1,14 @@
-<div [@slideInOut]="isOpen ? 'in' : 'out'"  #expandWrapper class="expand-wrapper" [class.collapsed]="!expanded">
+
+  <ion-toolbar class='ion-padding-bottom'>
+
+  <ion-item>
+    <ion-label>Responsável</ion-label>
+    <ion-toggle default='false' (ionChange)='toggleAccordion($event)' ></ion-toggle>
+  </ion-item>
+
+</ion-toolbar>
+
+<div  [@slideInOut]="currentState"  #expandWrapper class="expand-wrapper" [class.collapsed]="!expanded">
   <ng-content></ng-content>
 </div>
+{{ isOpen | json }}

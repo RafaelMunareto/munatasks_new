@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { take } from 'rxjs/operators';
-
+import { select, Store } from '@ngrx/store';
+import { finalize, take } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/services/auth.service';
+
 import {
   AddEtiquetas,
   AddResponsavel,
@@ -11,6 +11,8 @@ import {
 import { TasksService } from './pages/dashboard/tasks/services/tasks.service';
 import { EtiquetasService } from './pages/etiquetas/services/etiquetas.service';
 import { ResponsavelService } from './pages/responsaveis/services/responsavel.service';
+import { Notifications } from './shared/functions/notifications';
+import { Tasks } from './shared/model/tasks.model';
 
 @Component({
   selector: 'app-root',
@@ -21,12 +23,14 @@ export class AppComponent {
   pages: { url: string; direction: any; icon: string; text: string }[];
   user: firebase.default.User;
 
+
   constructor(
     private authService: AuthService,
     private etiquetasService: EtiquetasService,
     private responsavelService: ResponsavelService,
     private taskServices: TasksService,
     private store: Store<any>,
+    public nt: Notifications
   ) {
     this.initializeApp();
   }
@@ -37,6 +41,7 @@ export class AppComponent {
       if (user) {
         this.callNgrxGet();
       }
+
     });
 
     this.pages = [
@@ -83,8 +88,13 @@ export class AppComponent {
 
     this.taskServices
       .getAll()
-      .pipe(take(1))
-      .subscribe((res) => {
+      .pipe(take(1),
+      finalize(() => {
+        this.store.pipe(select(`tasks`), take(1)).subscribe((res) => {
+          this.nt.notificationsAcionar(res.alert);
+        });
+      }))
+      .subscribe((res: any) => {
         this.store.dispatch(AddTasks(res));
       });
 
@@ -95,4 +105,6 @@ export class AppComponent {
         this.store.dispatch(AddResponsavel(res));
       });
   }
+
+
 }

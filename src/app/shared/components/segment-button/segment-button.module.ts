@@ -11,6 +11,6 @@ import { TasksFunctions } from '../../functions/tasks-functions';
   declarations: [SegmentButtonComponent],
   imports: [SharedModule, DirectivesModule],
   exports: [SegmentButtonComponent],
-  providers: [LocalNotifications, TasksService, TasksFunctions],
+  providers: [TasksFunctions],
 })
 export class SegmentButtonModule {}

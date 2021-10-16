@@ -86,9 +86,9 @@ export function taskReducer(state = task, action: ActionModel) {
     );
     const alert = tasks.filter(
       (r) =>
-        formatDate(r.data, "yyyy-MM-dd'T'hh:mm", 'en') > agora &&
-        formatDate(r.data, "yyyy-MM-dd'T'hh:mm", 'en') < timer
-        ||  formatDate(r.data, "yyyy-MM-dd'T'hh:mm", 'en') < agora &&
+        (formatDate(r.data, "yyyy-MM-dd'T'hh:mm", 'en') > agora &&
+        formatDate(r.data, "yyyy-MM-dd'T'hh:mm", 'en') < timer)
+        || formatDate(r.data, "yyyy-MM-dd'T'hh:mm", 'en') < agora &&
         !r.done
     );
     return alert;

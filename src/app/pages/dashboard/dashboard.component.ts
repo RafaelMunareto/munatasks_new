@@ -12,6 +12,7 @@ import {
 } from 'src/app/core/ngrx/actions/action-types';
 import { EtiquetasService } from '../etiquetas/services/etiquetas.service';
 import { ResponsavelService } from '../responsaveis/services/responsavel.service';
+import { Notifications } from 'src/app/shared/functions/notifications';
 
 @Component({
   templateUrl: './dashboard.component.html',
@@ -28,7 +29,8 @@ export class DashboardComponent {
     public tasksService: TasksService,
     public etiquetasService: EtiquetasService,
     public responsaveisService: ResponsavelService,
-    private store: Store<any>
+    private store: Store<any>,
+    public nt: Notifications
   ) {}
 
   ionViewDidEnter() {
@@ -36,6 +38,7 @@ export class DashboardComponent {
     this.store.pipe(select('tasks')).subscribe((res: any) => {
       this.contador = res.contador;
       this.totalTaks = res.tasks.length;
+      this.nt.notificationsAcionar(res.alert);
     });
 
     //condicao para executar o ngrx tem tb no appComponente

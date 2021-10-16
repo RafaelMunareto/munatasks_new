@@ -13,6 +13,7 @@ import { EtiquetasService } from './pages/etiquetas/services/etiquetas.service';
 import { etiquetasReducer } from './core/ngrx/reducers/etiquetas.reducer';
 import { responsaveisReducer } from './core/ngrx/reducers/responsaveis.reducer';
 import { selectionReducer } from './core/ngrx/reducers/selection.reducer';
+import { AlertController } from '@ionic/angular';
 
 @NgModule({
   declarations: [AppComponent],
@@ -40,6 +41,7 @@ import { selectionReducer } from './core/ngrx/reducers/selection.reducer';
     EtiquetasService,
     ResponsavelService,
     LocalNotifications,
+    AlertController
   ],
 
   bootstrap: [AppComponent],

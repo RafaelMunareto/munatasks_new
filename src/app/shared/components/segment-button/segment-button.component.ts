@@ -100,7 +100,7 @@ export class SegmentButtonComponent implements OnInit {
     if (task.responsavel) {
       const alert = await this.alertController.create({
         cssClass: 'my-custom-class',
-        header: `Notifcação ${task.tipo}`,
+        header: `Tarefa de ${task.tipo} vence em 2 horas` ,
         subHeader: `${task.responsavel[0] ?? ''} ${task.responsavel[1] ?? ''} ${
           task.responsavel[2] ?? ''
         } ${task.responsavel[3] ?? ''}`,
@@ -109,19 +109,19 @@ export class SegmentButtonComponent implements OnInit {
         animated: true,
         inputs: [
           {
-            name: 'Adiar 30 min',
-            type: 'radio',
-            label: 'Adiar 30 min',
-            value: 1800000,
-            handler: () => {
-              this.radio = 1800000;
-            },
-          },
-          {
             name: 'Adiar 1 hora',
             type: 'radio',
             label: 'Adiar 1 hora',
             value: 3600000,
+            handler: () => {
+              this.radio = 3600000;
+            },
+          },
+          {
+            name: 'Adiar 2 horas',
+            type: 'radio',
+            label: 'Adiar 2 horas',
+            value: 7200000,
             handler: () => {
               this.radio = 3600000;
             },
@@ -133,6 +133,24 @@ export class SegmentButtonComponent implements OnInit {
             value: 86400000,
             handler: () => {
               this.radio = 86400000;
+            },
+          },
+          {
+            name: 'Adiar 2 dias',
+            type: 'radio',
+            label: 'Adiar 2 dias',
+            value: 172800000,
+            handler: () => {
+              this.radio = 172800000  ;
+            },
+          },
+          {
+            name: 'Adiar 1 semana',
+            type: 'radio',
+            label: 'Adiar 1 semana',
+            value: 86400000,
+            handler: () => {
+              this.radio = 604800000;
             },
           },
         ],
@@ -172,16 +190,13 @@ export class SegmentButtonComponent implements OnInit {
   }
 
   async onHoje(task: Tasks, time: number) {
-    let timer = 0;
-    if (time === 30) {
-      timer = 1800000;
-    } else if (time === 60) {
-      timer = 3600000;
-    } else if (time === 2) {
-      timer = 86400000;
+
+    if(!time){
+      time = 0;
     }
+
     const date = formatDate(
-      new Date().getTime() + timer,
+      new Date().getTime() + time,
       "yyyy-MM-dd'T'HH:mm",
       'en'
     );

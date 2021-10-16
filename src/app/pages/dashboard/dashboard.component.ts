@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import { Component } from '@angular/core';
 import { TasksService } from './tasks/services/tasks.service';
 import { select, Store } from '@ngrx/store';
@@ -13,6 +14,8 @@ import {
 import { EtiquetasService } from '../etiquetas/services/etiquetas.service';
 import { ResponsavelService } from '../responsaveis/services/responsavel.service';
 import { Notifications } from 'src/app/shared/functions/notifications';
+import { take } from 'rxjs/operators';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   templateUrl: './dashboard.component.html',
@@ -30,7 +33,8 @@ export class DashboardComponent {
     public etiquetasService: EtiquetasService,
     public responsaveisService: ResponsavelService,
     private store: Store<any>,
-    public nt: Notifications
+    private authService: AuthService,
+    private nt: Notifications
   ) {}
 
   ionViewDidEnter() {
@@ -38,6 +42,8 @@ export class DashboardComponent {
     this.store.pipe(select('tasks')).subscribe((res: any) => {
       this.contador = res.contador;
       this.totalTaks = res.tasks.length;
+    });
+    this.store.pipe(select('tasks'), take(1)).subscribe((res) => {
       this.nt.notificationsAcionar(res.alert);
     });
 
@@ -46,6 +52,15 @@ export class DashboardComponent {
       if (res.length !== this.totalTaks) {
         this.store.dispatch(ClearTasks());
         this.store.dispatch(AddTasks(res));
+        this.authService.authState$.subscribe((res) => {
+          if(res){
+            this.store.pipe(select('tasks'), take(1)).subscribe((res) => {
+              this.nt.notificationsAcionar(res.alert);
+            });
+          }else{
+            this.store.dispatch(ClearTasks());
+          }
+        });
       }
     });
     this.etiquetasService.getAll().subscribe((res) => {

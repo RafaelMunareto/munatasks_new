@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import { Component } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { finalize, take } from 'rxjs/operators';
@@ -88,12 +89,7 @@ export class AppComponent {
 
     this.taskServices
       .getAll()
-      .pipe(take(1),
-      finalize(() => {
-        this.store.pipe(select(`tasks`), take(1)).subscribe((res) => {
-          this.nt.notificationsAcionar(res.alert);
-        });
-      }))
+      .pipe(take(1))
       .subscribe((res: any) => {
         this.store.dispatch(AddTasks(res));
       });

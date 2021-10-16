@@ -1,8 +1,11 @@
+/* eslint-disable ngrx/avoid-dispatching-multiple-actions-sequentially */
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Store } from '@ngrx/store';
 import * as firebase from 'firebase';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ClearEtiquetas, ClearResponsavel, ClearTasks } from '../ngrx/actions/action-types';
 
 import { AuthOptions, AuthProvider, User } from './auth.types';
 
@@ -12,7 +15,8 @@ import { AuthOptions, AuthProvider, User } from './auth.types';
 export class AuthService {
   authState$: Observable<firebase.default.User>;
 
-  constructor(private afAuth: AngularFireAuth) {
+  constructor(private afAuth: AngularFireAuth,
+              private store: Store<any>) {
     this.authState$ = this.afAuth.authState;
   }
 
@@ -38,7 +42,10 @@ export class AuthService {
     return operation;
   }
 
-  logout(): Promise<void> {
+  async logout(): Promise<void> {
+    await this.store.dispatch(ClearTasks());
+    await this.store.dispatch(ClearResponsavel());
+    await this.store.dispatch(ClearEtiquetas());
     return this.afAuth.signOut();
   }
 

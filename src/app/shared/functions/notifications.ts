@@ -96,7 +96,7 @@ export class Notifications {
         ],
       });
       await alert.present();
-      const { role } = await alert.onDidDismiss();
+      await alert.onDidDismiss();
     }
   }
 

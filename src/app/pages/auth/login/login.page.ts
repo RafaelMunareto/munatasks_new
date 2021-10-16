@@ -149,7 +149,6 @@ export class LoginPage implements OnInit {
         NativeBiometric.getCredentials({
           server: 'http://www.munatasks.com',
         }).then((credentials) => {
-            console.log(credentials.username);
             this.authService.authenticate({
               isSignIn: this.configs.isSignIn,
               user: {email: credentials.username, password: credentials.password},

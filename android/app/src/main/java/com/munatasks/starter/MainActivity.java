@@ -1,4 +1,4 @@
-package com.munatasks.starter;
+package io.munatasks.starter;
 
 import com.getcapacitor.BridgeActivity;
 

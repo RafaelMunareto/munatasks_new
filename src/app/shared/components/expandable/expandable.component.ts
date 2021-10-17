@@ -18,7 +18,7 @@ import {
       state(
         'in',
         style({
-          height: '0%',
+          height: '0vh',
           opacity: 0
         })
       ),

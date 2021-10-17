@@ -18,14 +18,14 @@ import {
       state(
         'in',
         style({
-          height: '0vh',
+          height: '0%',
           opacity: 0
         })
       ),
       state(
         'out',
         style({
-          height: '100vh',
+          height: '100%',
           opacity: 1
         })
       ),

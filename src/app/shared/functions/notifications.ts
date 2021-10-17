@@ -154,6 +154,7 @@ export class Notifications {
 
   public notificationsAcionar() {
     this.store.pipe(select('tasks'), take(1)).subscribe((res) => {
+      console.log(res.alert);
       this.simpleNotif((res.alert));
     });
   }

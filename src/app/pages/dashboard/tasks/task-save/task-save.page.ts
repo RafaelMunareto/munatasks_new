@@ -44,7 +44,7 @@ export class TaskSavePage {
     private navCtrl: NavController,
     private etiquetaService: EtiquetasService,
     private store: Store<CompletoModel>,
-    private nt: Notifications
+    public nt: Notifications
   ) {
     this.createForm();
   }
@@ -101,7 +101,7 @@ export class TaskSavePage {
           ...this.taskForm.value,
         });
         this.store.dispatch(AddTasks([newTask]));
-        this.navCtrl.navigateBack(`/tasks`).then(()=> this.nt.notificationsAcionar());
+        this.navCtrl.navigateBack(`/tasks`);
       }
     } catch (error) {
       await this.overlayService.toast({
@@ -109,6 +109,7 @@ export class TaskSavePage {
       });
     } finally {
       loading.dismiss();
+      this.nt.notificationsAcionar();
     }
   }
 

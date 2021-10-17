@@ -61,7 +61,7 @@ export class TasksListPage {
     private etiquetaService: EtiquetasService,
     private responsavelService: ResponsavelService,
     private store: Store<any>,
-    private nt: Notifications
+    public nt: Notifications
   ) {
     this.createForm();
     this.storeAction();

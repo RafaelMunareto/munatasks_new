@@ -8,8 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { LoadingController, NavController } from '@ionic/angular';
-import { BiometricWrapper } from '@ionic-native/biometric-wrapper/ngx';
+import { NavController, Platform } from '@ionic/angular';
 
 import {
   AvailableResult,
@@ -19,6 +18,7 @@ import {
 
 import { AuthService } from 'src/app/core/services/auth.service';
 import { AuthProvider } from 'src/app/core/services/auth.types';
+import { CurrentPlatformService } from 'src/app/shared/services/current-plataform.service';
 import { mustMatch } from 'src/app/shared/validators/validate-password.validator';
 import { OverlayService } from '../../../core/services/overlay.service';
 
@@ -55,17 +55,12 @@ export class LoginPage implements OnInit {
     private navCtrl: NavController,
     private activeRoute: ActivatedRoute,
     private overlayService: OverlayService,
-    private biometricWrapper: BiometricWrapper
+    public currentPlatformService: CurrentPlatformService
   ) {}
 
   ngOnInit() {
     this.createForm();
     const redirect = this.activeRoute.snapshot.queryParamMap.get('redirect');
-    // eslint-disable-next-line quote-props
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    this.biometricWrapper.activateIris({'PID_XML': '<pid-xml/>'})
-      .then((res: any) => console.log(res))
-      .catch((error: any) => console.log(error) );
   }
 
   get email(): any {
@@ -142,21 +137,37 @@ export class LoginPage implements OnInit {
 
   async checkCredential(provider: AuthProvider) {
     NativeBiometric.isAvailable().then((result: AvailableResult) => {
-      const isAvailable = result.isAvailable;
-       const isFaceId=result.biometryType===BiometryType.FACE_ID;
-      if (isAvailable) {
+      const isAvailable =  result.isAvailable;
+      const isFaceId=result.biometryType===BiometryType.FACE_ID;
+      if (isAvailable || isFaceId) {
 
         NativeBiometric.getCredentials({
           server: 'http://www.munatasks.com',
         }).then((credentials) => {
-            this.authService.authenticate({
-              isSignIn: this.configs.isSignIn,
-              user: {email: credentials.username, password: credentials.password},
-              provider,
+
+            NativeBiometric.verifyIdentity({
+              reason: 'Para facilitar o login',
+              title: 'Log in',
+              subtitle: 'MunaTasks',
+              description: 'Acesso via digital.',
+            }).then(() => {
+              this.authService.authenticate({
+                isSignIn: this.configs.isSignIn,
+                user: {email: credentials.username, password: credentials.password},
+                provider,
+              }).then(
+                () => {
+                  this.navCtrl.navigateForward(
+                    this.activeRoute.snapshot.queryParamMap.get('redirect') || '/tasks'
+                  );
+                }
+              );
+            })
+            .catch((err) => {
+              this.overlayService.toast({
+                message: err.message,
+              });
             });
-            this.navCtrl.navigateForward(
-              this.activeRoute.snapshot.queryParamMap.get('redirect') || '/tasks'
-            );
            }).catch(async (err) => {
               await this.overlayService.toast({
                 message: err.message,

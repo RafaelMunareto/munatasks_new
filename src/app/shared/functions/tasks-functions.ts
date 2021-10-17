@@ -1,3 +1,6 @@
+/* eslint-disable max-len */
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable no-var */
 export class TasksFunctions {
 
   corEtiqueta(tipo: string, etiquetas: any[]): string {
@@ -47,4 +50,5 @@ export class TasksFunctions {
         behavior: 'smooth'
       });
   }
+
 }

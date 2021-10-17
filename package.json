@@ -11,9 +11,9 @@
     "build_prod": "npm run build -- --prod --output-hashing=all",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "resources": "capacitor-resources -p android,ios",
+    "resources": "npx cordova-res ios --skip-config --copy && npx cordova-res android --skip-config --copy",
     "resources_cordova": "npx cordova-res ios --skip-config --copy && npx cordova-res android --skip-config --copy",
-    "deploy:firebase": "npm run build -- --prod --output-hashing=all && npx firebase deploy"
+    "deploy:firebase": "npm run build --prod --output-hashing=all && npx firebase deploy"
   },
   "private": true,
   "dependencies": {
@@ -26,7 +26,7 @@
     "@angular/platform-browser": "~12.1.1",
     "@angular/platform-browser-dynamic": "~12.1.1",
     "@angular/router": "~12.1.1",
-    "@capacitor/android": "3.2.3",
+    "@capacitor/android": "3.2.5",
     "@capacitor/app": "^1.0.3",
     "@capacitor/cli": "^3.2.3",
     "@capacitor/core": "^3.2.3",

@@ -33,8 +33,6 @@ export class DashboardComponent {
     public etiquetasService: EtiquetasService,
     public responsaveisService: ResponsavelService,
     private store: Store<any>,
-    private authService: AuthService,
-    private nt: Notifications
   ) {}
 
   ionViewDidEnter() {
@@ -43,24 +41,11 @@ export class DashboardComponent {
       this.contador = res.contador;
       this.totalTaks = res.tasks.length;
     });
-    this.store.pipe(select('tasks'), take(1)).subscribe((res) => {
-      this.nt.notificationsAcionar(res.alert);
-    });
-
     //condicao para executar o ngrx tem tb no appComponente
     this.tasksService.getAll().subscribe((res) => {
       if (res.length !== this.totalTaks) {
         this.store.dispatch(ClearTasks());
         this.store.dispatch(AddTasks(res));
-        this.authService.authState$.subscribe((res) => {
-          if(res){
-            this.store.pipe(select('tasks'), take(1)).subscribe((res) => {
-              this.nt.notificationsAcionar(res.alert);
-            });
-          }else{
-            this.store.dispatch(ClearTasks());
-          }
-        });
       }
     });
     this.etiquetasService.getAll().subscribe((res) => {

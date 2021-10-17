@@ -26,12 +26,7 @@ export class AppComponent {
 
 
   constructor(
-    private authService: AuthService,
-    private etiquetasService: EtiquetasService,
-    private responsavelService: ResponsavelService,
-    private taskServices: TasksService,
-    private store: Store<any>,
-    public nt: Notifications
+    private authService: AuthService
   ) {
     this.initializeApp();
   }
@@ -39,10 +34,6 @@ export class AppComponent {
   initializeApp() {
     this.authService.authState$.subscribe((user) => {
       this.user = user;
-      if (user) {
-        this.callNgrxGet();
-      }
-
     });
 
     this.pages = [
@@ -79,28 +70,6 @@ export class AppComponent {
     ];
   }
 
-  private callNgrxGet() {
-    this.etiquetasService
-      .getAll()
-      .pipe(take(1))
-      .subscribe((res) => {
-        this.store.dispatch(AddEtiquetas(res));
-      });
-
-    this.taskServices
-      .getAll()
-      .pipe(take(1))
-      .subscribe((res: any) => {
-        this.store.dispatch(AddTasks(res));
-      });
-
-    this.responsavelService
-      .getAll()
-      .pipe(take(1))
-      .subscribe((res) => {
-        this.store.dispatch(AddResponsavel(res));
-      });
-  }
 
 
 }

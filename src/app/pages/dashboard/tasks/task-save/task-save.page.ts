@@ -15,6 +15,7 @@ import { OverlayService } from '../../../../core/services/overlay.service';
 import { EtiquetasService } from '../../../etiquetas/services/etiquetas.service';
 import { select, Store } from '@ngrx/store';
 import { CompletoModel } from 'src/app/core/ngrx/models/completo.model';
+import { Notifications } from 'src/app/shared/functions/notifications';
 
 
 @Component({
@@ -42,7 +43,8 @@ export class TaskSavePage {
     private route: ActivatedRoute,
     private navCtrl: NavController,
     private etiquetaService: EtiquetasService,
-    private store: Store<CompletoModel>
+    private store: Store<CompletoModel>,
+    private nt: Notifications
   ) {
     this.createForm();
   }
@@ -99,7 +101,7 @@ export class TaskSavePage {
           ...this.taskForm.value,
         });
         this.store.dispatch(AddTasks([newTask]));
-        this.navCtrl.navigateBack(`/tasks`);
+        this.navCtrl.navigateBack(`/tasks`).then(()=> this.nt.notificationsAcionar());
       }
     } catch (error) {
       await this.overlayService.toast({

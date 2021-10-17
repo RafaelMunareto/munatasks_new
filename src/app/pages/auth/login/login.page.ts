@@ -9,18 +9,25 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
+import { Store } from '@ngrx/store';
 
 import {
   AvailableResult,
   BiometryType,
   NativeBiometric,
 } from 'capacitor-native-biometric';
+import { finalize, take } from 'rxjs/operators';
+import { AddEtiquetas, AddResponsavel, AddTasks } from 'src/app/core/ngrx/actions/action-types';
 
 import { AuthService } from 'src/app/core/services/auth.service';
 import { AuthProvider } from 'src/app/core/services/auth.types';
+import { Notifications } from 'src/app/shared/functions/notifications';
 import { CurrentPlatformService } from 'src/app/shared/services/current-plataform.service';
 import { mustMatch } from 'src/app/shared/validators/validate-password.validator';
 import { OverlayService } from '../../../core/services/overlay.service';
+import { TasksService } from '../../dashboard/tasks/services/tasks.service';
+import { EtiquetasService } from '../../etiquetas/services/etiquetas.service';
+import { ResponsavelService } from '../../responsaveis/services/responsavel.service';
 
 @Component({
   selector: 'app-login',
@@ -55,7 +62,12 @@ export class LoginPage implements OnInit {
     private navCtrl: NavController,
     private activeRoute: ActivatedRoute,
     private overlayService: OverlayService,
-    public currentPlatformService: CurrentPlatformService
+    public currentPlatformService: CurrentPlatformService,
+    private taskService: TasksService,
+    private etiquetasService: EtiquetasService,
+    private responsavelService: ResponsavelService,
+    private store: Store<any>,
+    private nt: Notifications
   ) {}
 
   ngOnInit() {
@@ -105,7 +117,7 @@ export class LoginPage implements OnInit {
       });
       this.navCtrl.navigateForward(
         this.activeRoute.snapshot.queryParamMap.get('redirect') || '/tasks'
-      );
+      ).then(() => this.callNgrxGet());
     } catch (e) {
       await this.overlayService.toast({
         message: e.message,
@@ -151,17 +163,7 @@ export class LoginPage implements OnInit {
               subtitle: 'MunaTasks',
               description: 'Acesso via digital.',
             }).then(() => {
-              this.authService.authenticate({
-                isSignIn: this.configs.isSignIn,
-                user: {email: credentials.username, password: credentials.password},
-                provider,
-              }).then(
-                () => {
-                  this.navCtrl.navigateForward(
-                    this.activeRoute.snapshot.queryParamMap.get('redirect') || '/tasks'
-                  );
-                }
-              );
+              this.autenticate(provider, credentials);
             })
             .catch((err) => {
               this.overlayService.toast({
@@ -177,10 +179,49 @@ export class LoginPage implements OnInit {
     });
   }
 
+  private autenticate(provider, credentials?){
+    this.authService.authenticate({
+      isSignIn: this.configs.isSignIn,
+      user: {email: credentials.username, password: credentials.password},
+      provider,
+    }).then(
+      () => {
+        this.navCtrl.navigateForward(
+          this.activeRoute.snapshot.queryParamMap.get('redirect') || '/tasks'
+        ).then(() => this.callNgrxGet());
+      }
+    );
+  }
   private createForm(): void {
     this.authForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
+  private callNgrxGet() {
+    this.etiquetasService
+      .getAll()
+      .pipe(take(1))
+      .subscribe((res) => {
+        this.store.dispatch(AddEtiquetas(res));
+      });
+
+    this.taskService
+      .getAll()
+      .pipe(take(1),
+      finalize(() => this.nt.notificationsAcionar()))
+      .subscribe((res: any) => {
+        this.store.dispatch(AddTasks(res));
+      });
+
+    this.responsavelService
+      .getAll()
+      .pipe(take(1))
+      .subscribe((res) => {
+        this.store.dispatch(AddResponsavel(res));
+      });
+
+
+  }
+
 }

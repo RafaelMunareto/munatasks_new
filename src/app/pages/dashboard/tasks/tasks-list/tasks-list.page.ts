@@ -20,6 +20,7 @@ import { EtiquetasService } from '../../../etiquetas/services/etiquetas.service'
 import { ResponsavelService } from '../../../responsaveis/services/responsavel.service';
 import { Store } from '@ngrx/store';
 import * as moment from 'moment';
+import { Notifications } from 'src/app/shared/functions/notifications';
 
 @Component({
   selector: 'app-tasks-list',
@@ -59,7 +60,8 @@ export class TasksListPage {
     private overlayService: OverlayService,
     private etiquetaService: EtiquetasService,
     private responsavelService: ResponsavelService,
-    private store: Store<any>
+    private store: Store<any>,
+    private nt: Notifications
   ) {
     this.createForm();
     this.storeAction();
@@ -142,6 +144,7 @@ export class TasksListPage {
       this.tasksService.update(taskToUpdate);
       this.filterTasks();
       this.cor();
+      this.nt.notificationsAcionar();
     }, 400);
     await this.overlayService.toast({
       message: `Tarefa ${task.title} ${

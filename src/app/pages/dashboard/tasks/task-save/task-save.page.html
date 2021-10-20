@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-buttons slot='start'>
+    <ion-buttons slot="start">
       <ion-back-button defaultHref="/tasks"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ pageTitle }}</ion-title>
@@ -8,105 +8,102 @@
 </ion-header>
 
 <ion-content padding>
-  <form
-    class='ion-padding'
-    [formGroup]="taskForm"
-    (submit)="onSubmit()"
-  >
+  <form class="ion-padding" [formGroup]="taskForm" (submit)="onSubmit()">
     <ion-item>
       <ion-textarea
         rows="6"
-        name='title'
-        placeholder='Lembrete'
-        formControlName='title'
+        name="title"
+        placeholder="Lembrete"
+        formControlName="title"
       ></ion-textarea>
-      <app-validator-note [form-control]="$any(taskForm.get('title'))"></app-validator-note>
+      <app-validator-note
+        [form-control]="$any(taskForm.get('title'))"
+      ></app-validator-note>
       <ion-toggle
-        slot='start'
-        color='primary'
-        formControlName='done'
+        slot="start"
+        color="primary"
+        formControlName="done"
       ></ion-toggle>
     </ion-item>
 
     <ion-row>
-      <ion-col size='8'>
+      <ion-col size="8">
         <ion-select
           placeholder="Selecione um item"
           interface="action-sheet"
           okText="OK"
           cancelText="Cancelar"
           class="ion-padding select"
-          formControlName='tipo'
-          [appTaskTipos]='etiquetas'
+          formControlName="tipo"
+          [appTaskTipos]="etiquetas"
         >
           <ion-select-option
-            *ngFor='let etiqueta of etiquetas'
+            *ngFor="let etiqueta of etiquetas"
             value="{{ etiqueta.nome }}"
           >
             <ion-text>
-
-              <ion-badge [color]='etiqueta.cor'>{{ etiqueta.nome | titlecase }}</ion-badge>
+              <ion-badge [color]="etiqueta.cor"
+                >{{ etiqueta.nome | titlecase }}</ion-badge
+              >
             </ion-text>
           </ion-select-option>
         </ion-select>
       </ion-col>
-      <ion-col
-        size='4'
-        class='align-items-center justify-content-center'
-      >
+      <ion-col size="4" class="align-items-center justify-content-center">
         <ion-label>
           <ion-icon
-            class='icon-2em'
-            color='warning'
+            class="icon-2em"
+            color="warning"
             name="flag-sharp"
           ></ion-icon>
         </ion-label>
         <ion-checkbox
-          color='warning'
-          formControlName='sinalizado'
+          color="warning"
+          formControlName="sinalizado"
         ></ion-checkbox>
       </ion-col>
     </ion-row>
 
     <div class="d-flex justify-content-between align-items-center">
-      <ion-item
-        class='ion-padding-bottom'
-        [disabled]="pickerShow"
-      >
+      <ion-item class="ion-padding-bottom" [disabled]="pickerShow">
         <ion-label>Data e Hora</ion-label>
         <ion-datetime
-          displayFormat="DD/MMM/YYYY HH:mm"
-          pickerFormat="DD MMM YYYY HH mm"
-          monthShortNames='Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez'
-          max=2030
-          formControlName='data'
+          displayFormat="DD/MM/YYYY"
+          pickerFormat="DD MM YYYY"
+          monthShortNames="Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez"
+          max="2030"
+          formControlName="data"
           doneText="OK"
           cancelText="Cancelar"
         ></ion-datetime>
-        <app-validator-note [form-control]="$any(taskForm.get('data'))"></app-validator-note>
       </ion-item>
-      <ion-item style='padding: 0rem'>
+
+      <app-validator-note
+        [form-control]="$any(taskForm.get('data'))"
+      ></app-validator-note>
+
+      <ion-item style="padding: 0rem">
         <ion-label>Hoje</ion-label>
         <ion-toggle
-          style='padding: 0.3rem'
-          (ionChange)='hojeAction($event)'
+          style="padding: 0.3rem"
+          (ionChange)="hojeAction($event)"
         ></ion-toggle>
       </ion-item>
     </div>
 
-    <div *ngIf='responsaveis.length > 0'>
+    <div *ngIf="responsaveis.length > 0">
       <app-expandable>
-          <ion-item *ngFor="let responsavel of responsaveis">
-            <ion-toggle
-              slot='start'
-              color='primary'
-              [checked]='povoaChecked(responsavel.nome)'
-              (ionChange)='toogle($event, responsavel.nome)'
-            >
-              {{responsavel.nome}}
-            </ion-toggle>
-            <ion-label>{{responsavel.nome}}</ion-label>
-          </ion-item>
+        <ion-item *ngFor="let responsavel of responsaveis">
+          <ion-toggle
+            slot="start"
+            color="primary"
+            [checked]="povoaChecked(responsavel.nome)"
+            (ionChange)="toogle($event, responsavel.nome)"
+          >
+            {{responsavel.nome}}
+          </ion-toggle>
+          <ion-label>{{responsavel.nome}}</ion-label>
+        </ion-item>
       </app-expandable>
     </div>
 
@@ -114,11 +111,9 @@
       [disabled]="taskForm.invalid"
       expand="block"
       type="submit"
-      color='medium'
+      color="medium"
     >
       Salvar
     </ion-button>
-
   </form>
-
 </ion-content>

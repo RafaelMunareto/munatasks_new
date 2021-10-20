@@ -78,17 +78,11 @@ export function taskReducer(state = task, action: ActionModel) {
   }
 
   function alertAction(tasks: Tasks[]) {
-    const agora = formatDate(new Date(), "yyyy-MM-dd'T'hh:mm", 'en');
-    const timer = formatDate(
-      new Date().getTime() + 7200000,
-      "yyyy-MM-dd'T'hh:mm",
-      'en'
-    );
+    const agora = formatDate(new Date(), "yyyy-MM-dd", 'en');
+
     const alert = tasks.filter(
       (r) =>
-        (formatDate(r.data, "yyyy-MM-dd'T'hh:mm", 'en') > agora &&
-        formatDate(r.data, "yyyy-MM-dd'T'hh:mm", 'en') < timer)
-        || formatDate(r.data, "yyyy-MM-dd'T'hh:mm", 'en') < agora &&
+        formatDate(r.data, "yyyy-MM-dd", 'en') < agora &&
         !r.done
     );
     return alert;

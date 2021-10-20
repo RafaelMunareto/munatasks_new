@@ -1,14 +1,15 @@
+/* eslint-disable object-shorthand */
+/* eslint-disable @typescript-eslint/member-ordering */
 import {
   AddSelectionFase,
   AddTasks,
 } from './../../../../core/ngrx/actions/action-types';
-import { NavController } from '@ionic/angular';
-import { Component } from '@angular/core';
+import { ModalController, NavController } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { take } from 'rxjs/operators';
 import * as moment from 'moment';
-
 
 import { TasksService } from '../services/tasks.service';
 import { OverlayService } from '../../../../core/services/overlay.service';
@@ -16,14 +17,14 @@ import { EtiquetasService } from '../../../etiquetas/services/etiquetas.service'
 import { select, Store } from '@ngrx/store';
 import { CompletoModel } from 'src/app/core/ngrx/models/completo.model';
 import { Notifications } from 'src/app/shared/functions/notifications';
+import { formatDate } from '@angular/common';
 
 
 @Component({
   templateUrl: './task-save.page.html',
   styleUrls: ['./task-save.page.scss'],
-
 })
-export class TaskSavePage {
+export class TaskSavePage implements OnInit {
   pageTitle = '...';
   taskForm: FormGroup;
   taskId: string = undefined;
@@ -44,9 +45,13 @@ export class TaskSavePage {
     private navCtrl: NavController,
     private etiquetaService: EtiquetasService,
     private store: Store<CompletoModel>,
-    public nt: Notifications
+    public nt: Notifications,
+    public modalCtrl: ModalController
   ) {
     this.createForm();
+  }
+  ngOnInit(): void {
+
   }
 
   ionViewDidEnter() {
@@ -144,10 +149,12 @@ export class TaskSavePage {
     this.taskForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       tipo: ['', [Validators.required, Validators.minLength(3)]],
-      data: ['', [Validators.required]],
+      data: [formatDate(new Date(), 'yyyy-MM-dd', 'en'), [Validators.required]],
       responsavel: [''],
       done: [false],
       sinalizado: [false],
     });
   }
+
+
 }

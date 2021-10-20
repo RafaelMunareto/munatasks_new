@@ -31,7 +31,7 @@ export class Notifications {
     if (task.responsavel) {
       const alert = await this.alertController.create({
         cssClass: 'my-custom-class',
-        header: `Tarefa de ${task.tipo} vence em 2 horas` ,
+        header: `Tarefa de ${task.tipo} está vencida` ,
         subHeader: `${task.responsavel[0] ?? ''} ${task.responsavel[1] ?? ''} ${
           task.responsavel[2] ?? ''
         } ${task.responsavel[3] ?? ''}`,
@@ -39,24 +39,6 @@ export class Notifications {
         translucent: true,
         animated: true,
         inputs: [
-          {
-            name: 'Adiar 1 hora',
-            type: 'radio',
-            label: 'Adiar 1 hora',
-            value: 3600000,
-            handler: () => {
-              this.radio = 3600000;
-            },
-          },
-          {
-            name: 'Adiar 2 horas',
-            type: 'radio',
-            label: 'Adiar 2 horas',
-            value: 7200000,
-            handler: () => {
-              this.radio = 3600000;
-            },
-          },
           {
             name: 'Adiar 1 dia',
             type: 'radio',
@@ -133,7 +115,7 @@ export class Notifications {
 
     const date = formatDate(
       new Date().getTime() + time,
-      "yyyy-MM-dd'T'HH:mm",
+      "yyyy-MM-dd",
       'en'
     );
     const taskToUpdate = {

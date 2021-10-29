@@ -1,3 +1,4 @@
+import { etiqueta } from './../../../../core/ngrx/reducers/etiquetas.reducer';
 import {
   AddSelectionEtiqueta,
   ClearTasks,
@@ -18,7 +19,7 @@ import { take } from 'rxjs/operators';
 import { formatDate } from '@angular/common';
 import { EtiquetasService } from '../../../etiquetas/services/etiquetas.service';
 import { ResponsavelService } from '../../../responsaveis/services/responsavel.service';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import * as moment from 'moment';
 import { Notifications } from 'src/app/shared/functions/notifications';
 
@@ -98,6 +99,7 @@ export class TasksListPage {
         newTasks = newTasks.filter((r) => r.sinalizado && !r.done);
     }
     if (Boolean(this.etiquetaParam)) {
+
       newTasks = newTasks.filter(
         (r) =>
           this.etiquetaParam === 'todos' ||
@@ -239,7 +241,7 @@ export class TasksListPage {
   }
 
   private storeAction() {
-    this.store.select('selectBox').subscribe((res: any) => {
+    this.store.pipe(select('selectBox'), take(1)).subscribe((res: any) => {
       this.faseParam = res.fase;
       this.etiquetaParam = res.etiqueta;
       this.responsavelParam = res.responsavel;

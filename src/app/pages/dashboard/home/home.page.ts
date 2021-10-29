@@ -49,12 +49,8 @@ export class HomePageComponent {
   }
 
   onDetail(etiqueta: Etiqueta): void {
+    this.store.dispatch(AddSelectionEtiqueta(etiqueta.nome));
     this.navCtrl.navigateForward(['/tasks/list']);
-    this.store.dispatch(AddSelectionFase('todos'));
-    setTimeout(
-      () => this.store.dispatch(AddSelectionEtiqueta(etiqueta.nome)),
-      10
-    );
   }
 
   onDirect(event: any) {

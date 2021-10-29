@@ -19,7 +19,7 @@ export class TasksService extends Firestore<Tasks> {
     this.authService.authState$.subscribe((user) => {
       if (user) {
         this.setCollection(`/users/${user.uid}/tasks`, (ref) =>
-          ref.orderBy('done', 'asc').orderBy('title', 'asc')
+          ref.orderBy('data', 'asc').orderBy('title', 'asc')
         );
         this.getAll();
         return;

@@ -201,22 +201,19 @@ export class LoginPage implements OnInit {
   private callNgrxGet() {
     this.etiquetasService
       .getAll()
-      .pipe(take(1))
       .subscribe((res) => {
         this.store.dispatch(AddEtiquetas(res));
       });
 
     this.taskService
       .getAll()
-      .pipe(take(1),
-      finalize(() => this.nt.notificationsAcionar()))
+      .pipe(finalize(() => this.nt.notificationsAcionar()))
       .subscribe((res: any) => {
         this.store.dispatch(AddTasks(res));
       });
 
     this.responsavelService
       .getAll()
-      .pipe(take(1))
       .subscribe((res) => {
         this.store.dispatch(AddResponsavel(res));
       });

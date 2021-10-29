@@ -7,72 +7,83 @@
       class='ion-margin-top ion-margin-bottom'
       *ngFor='let conta of contador'
     >
-      <ion-row class='ion-justify-content-center'>
-        <app-card-icone-contador
-          label='Hoje'
-          color='primary'
-          icone='calendar-outline'
-          (direct)="onDirect('hoje')"
-          [data]='conta.hoje'
-        ></app-card-icone-contador>
-        <app-card-icone-contador
-          label='Abertos'
-          color='success'
-          icone='file-tray-full-outline'
-          [data]='conta.abertos'
-          (direct)="onDirect('abertos')"
-        ></app-card-icone-contador>
-      </ion-row>
-      <ion-row class='ion-justify-content-center'>
-        <app-card-icone-contador
-          label='Sinalizados'
-          color='warning'
-          icone='flag-outline'
-          [data]='conta.sinalizados'
-          (direct)="onDirect('sinalizados')"
-        ></app-card-icone-contador>
-        <app-card-icone-contador
-          label='Finalizados'
-          color='primary'
-          icone='checkmark-circle-outline'
-          [data]='conta.finalizados'
-          (direct)="onDirect('finalizados')"
-        ></app-card-icone-contador>
+      <ion-row>
+        <ion-col size=6>
+          <app-card-icone-contador
+            label='Hoje'
+            color='primary'
+            icone='calendar-outline'
+            (direct)="onDirect('hoje')"
+            [data]='conta.hoje'
+          ></app-card-icone-contador>
+          <app-card-icone-contador
+            label='Abertos'
+            color='success'
+            icone='file-tray-full-outline'
+            [data]='conta.abertos'
+            (direct)="onDirect('abertos')"
+          ></app-card-icone-contador>
+        </ion-col>
+        <ion-col>
+          <app-card-icone-contador
+            label='Sinalizados'
+            color='warning'
+            icone='flag-outline'
+            [data]='conta.sinalizados'
+            (direct)="onDirect('sinalizados')"
+          ></app-card-icone-contador>
+          <app-card-icone-contador
+            label='Finalizados'
+            color='primary'
+            icone='checkmark-circle-outline'
+            [data]='conta.finalizados'
+            (direct)="onDirect('finalizados')"
+          ></app-card-icone-contador>
+        </ion-col>
+
       </ion-row>
     </ion-grid>
   </div>
 
   <ng-template #skeletonContador>
-    <div class='flex-column padding-top-2'>
-      <div class='justify-content-center'>
-        <div class="custom-skeleton padding-right-1">
-          <ion-skeleton-text
-            animated
-            style="width: 10rem; height:5.5rem; border-radius:10px"
-          ></ion-skeleton-text>
-        </div>
-        <div class="custom-skeleton">
-          <ion-skeleton-text
-            animated
-            style="width: 10rem; height:5.5rem; border-radius:10px"
-          ></ion-skeleton-text>
-        </div>
-      </div>
-      <div class='justify-content-center '>
-        <div class="custom-skeleton padding-right-1">
-          <ion-skeleton-text
-            animated
-            style="width: 10rem; height:5.5rem; border-radius:10px"
-          ></ion-skeleton-text>
-        </div>
-        <div class="custom-skeleton">
-          <ion-skeleton-text
-            animated
-            style="width: 10rem; height:5.5rem; border-radius:10px"
-          ></ion-skeleton-text>
-        </div>
-      </div>
-    </div>
+      <ion-row style='padding-left: 0.5rem; padding-right:0.5rem;'>
+        <ion-col size=6>
+          <ion-card style='margin: 0rem; margin-right: 0.5rem;'>
+            <ion-skeleton-text
+              animated
+              style="width: 100%; height:6rem; border-radius:10px"
+            ></ion-skeleton-text>
+          </ion-card>
+        </ion-col>
+        <ion-col size=6>
+          <ion-card style='margin: 0rem;; margin-left: 0.5rem;'>
+            <ion-skeleton-text
+              animated
+              style="width: 100%; height:6rem; border-radius:10px"
+            ></ion-skeleton-text>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+      <ion-row style='padding-left: 0.5rem; padding-right:0.5rem;'>
+        <ion-col size=6>
+          <ion-card style='margin: 0rem; margin-right: 0.5rem;'>
+            <ion-skeleton-text
+              animated
+              style="width: 100%; height:6rem; border-radius:10px"
+            ></ion-skeleton-text>
+          </ion-card>
+        </ion-col>
+        <ion-col size=6>
+          <ion-card style='margin: 0rem; margin-left: 0.5rem;'>
+            <ion-skeleton-text
+              animated
+              style="width: 100%; height:6rem; border-radius:10px"
+            ></ion-skeleton-text>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
   </ng-template>
 
   <ion-grid>

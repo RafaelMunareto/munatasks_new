@@ -1,3 +1,4 @@
+import { finalize } from 'rxjs/operators';
 /* eslint-disable @typescript-eslint/no-shadow */
 import { Component } from '@angular/core';
 import { TasksService } from './tasks/services/tasks.service';
@@ -39,10 +40,9 @@ export class DashboardComponent {
   ionViewDidEnter() {
 
     //chamada do tasks
-    this.store.pipe(select('tasks')).subscribe((res: any) => {
+    this.store.pipe(select('tasks'), finalize(() => this.nt.notificationsAcionar())).subscribe((res: any) => {
       this.contador = res.contador;
       this.totalTaks = res.tasks.length;
-      this.nt.simpleNotif((res.alert));
     });
     //condicao para executar o ngrx tem tb no appComponente
     this.tasksService.getAll().subscribe((res) => {

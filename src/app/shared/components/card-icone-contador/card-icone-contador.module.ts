@@ -12,10 +12,9 @@ import { SharedModule } from '../../shared.module';
   template: `
     <ion-card
       id="ion-card"
-      class="box-shadown-light pointer"
-      style="min-width:10rem; max-width:10rem"
+      class="box-shadown-light pointer w100 padding03"
     >
-      <ion-card-content (click)="direct.emit($event)">
+      <ion-card-content style='padding-left: 0.3rem; padding-right: 0.3rem' (click)="direct.emit($event)">
         <ion-row class="ion-justify-content-between">
           <div class="flex-column">
             <ion-icon
@@ -24,10 +23,10 @@ import { SharedModule } from '../../shared.module';
               [color]="color"
               class="icon-2em"
             ></ion-icon>
-            <ion-label>{{ label }}</ion-label>
+            <ion-label class='size90'>{{ label }}</ion-label>
           </div>
           <ion-text>
-            <h1 class="bold size200">{{ data }}</h1>
+            <h1 class="bold size150">{{ data }}</h1>
           </ion-text>
         </ion-row>
       </ion-card-content>

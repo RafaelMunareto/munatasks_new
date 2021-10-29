@@ -135,9 +135,11 @@ export class Notifications {
 
 
   public notificationsAcionar() {
-    this.store.pipe(select('tasks'), take(1), debounceTime(400)).subscribe((res) => {
-      this.simpleNotif((res.alert));
-    });
+    setTimeout(() => {
+      this.store.pipe(select('tasks'), take(1)).subscribe((res) => {
+        this.simpleNotif((res.alert));
+      });
+    },1000);
   }
 
 }

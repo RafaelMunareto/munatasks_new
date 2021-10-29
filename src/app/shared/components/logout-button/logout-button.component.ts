@@ -40,12 +40,12 @@ export class LogoutButtonComponent implements OnInit {
         {
           text: 'SIM',
           handler: async () => {
+            await this.store.dispatch(ClearEtiquetas());
+            await this.store.dispatch(ClearResponsavel());
+            await this.store.dispatch(ClearTasks());
             await this.authService.logout();
             this.navCtrl.navigateRoot('/login');
             this.menuCtrl.enable(false, this.menu);
-            this.store.dispatch(ClearEtiquetas());
-            this.store.dispatch(ClearResponsavel());
-            this.store.dispatch(ClearTasks());
           },
         },
         'NÃO',

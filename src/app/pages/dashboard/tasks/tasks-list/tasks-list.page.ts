@@ -146,7 +146,6 @@ export class TasksListPage {
       this.tasksService.update(taskToUpdate);
       this.filterTasks();
       this.cor();
-      this.nt.notificationsAcionar();
     }, 400);
     await this.overlayService.toast({
       message: `Tarefa ${task.title} ${

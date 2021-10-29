@@ -114,7 +114,6 @@ export class TaskSavePage implements OnInit {
       });
     } finally {
       loading.dismiss();
-      this.nt.notificationsAcionar();
     }
   }
 

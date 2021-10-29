@@ -33,9 +33,12 @@ export class DashboardComponent {
     public etiquetasService: EtiquetasService,
     public responsaveisService: ResponsavelService,
     private store: Store<any>,
+    private nt: Notifications
   ) {}
 
   ionViewDidEnter() {
+    this.nt.notificationsAcionar();
+
     //chamada do tasks
     this.store.pipe(select('tasks')).subscribe((res: any) => {
       this.contador = res.contador;

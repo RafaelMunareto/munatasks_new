@@ -124,6 +124,7 @@ export class LoginPage implements OnInit {
       });
     } finally {
       loading.dismiss();
+      this.nt.notificationsAcionar();
     }
   }
 
@@ -207,7 +208,6 @@ export class LoginPage implements OnInit {
 
     this.taskService
       .getAll()
-      .pipe(finalize(() => this.nt.notificationsAcionar()))
       .subscribe((res: any) => {
         this.store.dispatch(AddTasks(res));
       });

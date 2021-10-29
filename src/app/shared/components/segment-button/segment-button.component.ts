@@ -1,4 +1,3 @@
-import { etiqueta } from './../../../core/ngrx/reducers/etiquetas.reducer';
 
 import { NavigationEnd, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
@@ -12,7 +11,6 @@ import { filter, take } from 'rxjs/operators';
 
 import {
   AddSelectionFase,
-  AddSelectionEtiqueta,
 } from './../../../core/ngrx/actions/action-types';
 
 @Component({
@@ -23,7 +21,7 @@ import {
 export class SegmentButtonComponent implements OnInit{
   @Input() contador;
   fase = 'home';
-  etiqueta = 'etiqueta';
+  etiqueta;
   constructor(
     private navCtrl: NavController,
     private store: Store<any>,
@@ -45,7 +43,6 @@ export class SegmentButtonComponent implements OnInit{
         } else {
           this.store.pipe(select('selectBox'), take(2)).subscribe((data) => {
             this.fase = data.fase ?? 'home';
-            this.etiqueta = data.etiqueta;
             this.slideChanged(this.fase);
           });
         }
@@ -63,12 +60,10 @@ export class SegmentButtonComponent implements OnInit{
         this.slideChanged(`create`);
         break;
       default:
-        if(!etiqueta){
-          this.store.dispatch(AddSelectionEtiqueta('todos'));
-        }
         this.store.dispatch(AddSelectionFase(e));
         this.slideChanged(e);
-        this.navCtrl.navigateRoot(['/tasks/list']);
+        this.navCtrl.navigateForward(['/tasks/list']);
+
     }
   }
 

@@ -1,7 +1,5 @@
-import { etiqueta } from './../../../../core/ngrx/reducers/etiquetas.reducer';
 import {
   AddSelectionEtiqueta,
-  ClearTasks,
 } from './../../../../core/ngrx/actions/action-types';
 /* eslint-disable @typescript-eslint/no-shadow */
 import {
@@ -242,7 +240,7 @@ export class TasksListPage {
   }
 
   private storeAction() {
-    this.store.pipe(select('selectBox'), take(1)).subscribe((res: any) => {
+    this.store.pipe(select('selectBox')).subscribe((res: any) => {
       this.faseParam = res.fase;
       this.etiquetaParam = res.etiqueta;
       this.responsavelParam = res.responsavel;

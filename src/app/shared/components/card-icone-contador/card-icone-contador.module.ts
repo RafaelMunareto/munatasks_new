@@ -13,7 +13,7 @@ import { SharedModule } from '../../shared.module';
     <ion-card
       id="ion-card"
       class="box-shadown-light pointer"
-      style="min-width:10rem"
+      style="min-width:10rem; max-width:10rem"
     >
       <ion-card-content (click)="direct.emit($event)">
         <ion-row class="ion-justify-content-between">

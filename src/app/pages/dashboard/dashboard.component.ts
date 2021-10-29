@@ -37,12 +37,12 @@ export class DashboardComponent {
   ) {}
 
   ionViewDidEnter() {
-    this.nt.notificationsAcionar();
 
     //chamada do tasks
     this.store.pipe(select('tasks')).subscribe((res: any) => {
       this.contador = res.contador;
       this.totalTaks = res.tasks.length;
+      this.nt.simpleNotif((res.alert));
     });
     //condicao para executar o ngrx tem tb no appComponente
     this.tasksService.getAll().subscribe((res) => {

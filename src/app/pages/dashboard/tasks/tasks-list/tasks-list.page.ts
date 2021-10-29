@@ -179,10 +179,12 @@ export class TasksListPage {
 
   changeSelect(event) {
     this.store.dispatch(AddSelectionEtiqueta(event.target.value));
+    this.storeAction();
   }
 
   changeSelectResponsavel(event: any) {
     this.store.dispatch(AddSelectionResponsavel(event.target.value));
+    this.storeAction();
   }
 
   corEtiqueta(tipo: string): string {

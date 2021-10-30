@@ -3,7 +3,7 @@ import { CompletoModel } from 'src/app/core/ngrx/models/completo.model';
 import { ActionTypes } from '../actions/action-types';
 import { ActionModel } from '../models/action.model';
 
-export const select = new CompletoModel();
+export const select = {};
 
 export function selectionReducer(state = select, action: ActionModel) {
   switch (action.type) {
@@ -16,7 +16,18 @@ export function selectionReducer(state = select, action: ActionModel) {
     case ActionTypes.AddSelectionEtiqueta: {
       return { ...state, etiqueta: action.payload };
     }
-
+    case ActionTypes.ClearSelectionEtiqueta: {
+      state = 'todos';
+      return state;
+    }
+    case ActionTypes.ClearSelectionFase: {
+      state = 'home';
+      return state;
+    }
+    case ActionTypes.ClearSelectionResponsavel: {
+      state = 'todos';
+      return state;
+    }
     default:
       return state;
   }

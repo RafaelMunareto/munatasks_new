@@ -1,6 +1,10 @@
 import {
   AddSelectionEtiqueta,
   AddSelectionFase,
+  AddSelectionResponsavel,
+  clearSelectionEtiqueta,
+  ClearSelectionFase,
+  ClearSelectionResponsavel,
   RemoveEtiquetas,
 } from './../../../core/ngrx/actions/action-types';
 import { CompletoModel } from './../../../core/ngrx/models/completo.model';
@@ -50,6 +54,8 @@ export class HomePageComponent {
 
   onDetail(etiqueta: Etiqueta): void {
     this.store.dispatch(AddSelectionEtiqueta(etiqueta.nome));
+    this.store.dispatch(AddSelectionFase('todos'));
+    this.store.dispatch(AddSelectionResponsavel('todos'));
     this.navCtrl.navigateForward(['/tasks/list']);
   }
 

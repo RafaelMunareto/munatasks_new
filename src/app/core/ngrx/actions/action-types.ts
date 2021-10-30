@@ -21,6 +21,10 @@ export enum ActionTypes {
   AddSelectionEtiqueta = 'addSelectionEtiqueta',
   AddSelectionResponsavel = 'addSelectionResponsavel',
   AddSelectionFase = 'addSelectionFase',
+  ClearSelectionEtiqueta = 'clearSelectionEtiqueta',
+  ClearSelectionResponsavel = 'clearSelectionResponsavel',
+  ClearSelectionFase = 'clearSelectionFase',
+
 }
 //tasks
 export const AddTasks = (task: any) => {
@@ -80,4 +84,16 @@ export const AddSelectionFase = (fase: any) => {
     type: ActionTypes.AddSelectionFase,
     payload: fase,
   };
+};
+
+export const ClearSelectionFase = () => {
+  return <Action>{ type: ActionTypes.ClearSelectionFase, payload: null };
+};
+
+export const ClearSelectionResponsavel = () => {
+  return <Action>{ type: ActionTypes.ClearSelectionResponsavel, payload: null };
+};
+
+export const clearSelectionEtiqueta = () => {
+  return <Action>{ type: ActionTypes.ClearSelectionEtiqueta, payload: null };
 };

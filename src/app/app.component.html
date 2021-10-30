@@ -1,45 +1,52 @@
-<ion-split-pane
-  contentId='menu-content'
-  when='md'
->
-  <ion-menu
+
+<ng-template #carregaNormal>
+  <ion-split-pane
     contentId='menu-content'
-    menuId='main-menu'
-    [disabled]='true'
+    when='md'
   >
-    <ion-header>
-      <ion-toolbar color='warning'>
-        <ion-title>Menu</ion-title>
-      </ion-toolbar>
-    </ion-header>
+    <ion-menu
+      contentId='menu-content'
+      menuId='main-menu'
+      [disabled]='true'
+    >
+      <ion-header>
+        <ion-toolbar color='warning'>
+          <ion-title>Menu</ion-title>
+        </ion-toolbar>
+      </ion-header>
 
-    <ion-content>
-      <ion-menu-toggle autoHide='false'>
-        <ion-list>
+      <ion-content>
+        <ion-menu-toggle autoHide='false'>
+          <ion-list>
 
-          <ion-chip class='ion-margin-start'>
-            <ion-avatar>
-              <img src="assets/avatar.svg">
-            </ion-avatar>
-            <ion-label *ngIf='user'>{{ user.displayName }}</ion-label>
-          </ion-chip>
+            <ion-chip class='ion-margin-start'>
+              <ion-avatar>
+                <img src="assets/avatar.svg">
+              </ion-avatar>
+              <ion-label *ngIf='user'>{{ user.displayName }}</ion-label>
+            </ion-chip>
 
-          <ion-item
-            button
-            *ngFor='let page of pages'
-            [routerLink]="page.url"
-            [routerDirection]="page.direction"
-          >
-            <ion-icon
-              slot="start"
-              [name]="page.icon"
-            ></ion-icon>
-            <ion-label>{{ page.text }}</ion-label>
-          </ion-item>
-        </ion-list>
-      </ion-menu-toggle>
-    </ion-content>
-  </ion-menu>
-  <ion-router-outlet id='menu-content'></ion-router-outlet>
- 
-</ion-split-pane>
+            <ion-item
+              button
+              *ngFor='let page of pages'
+              [routerLink]="page.url"
+              [routerDirection]="page.direction"
+            >
+              <ion-icon
+                slot="start"
+                [name]="page.icon"
+              ></ion-icon>
+              <ion-label>{{ page.text }}</ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-menu-toggle>
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet id='menu-content'></ion-router-outlet>
+
+  </ion-split-pane>
+</ng-template>
+
+<app-versao [versao]='versao'
+  *ngIf='versaoAtual < versao && this.currentPlatformService.isDevice; else  carregaNormal'
+></app-versao>

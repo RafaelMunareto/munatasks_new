@@ -15,8 +15,6 @@ import {
 import { EtiquetasService } from '../etiquetas/services/etiquetas.service';
 import { ResponsavelService } from '../responsaveis/services/responsavel.service';
 import { Notifications } from 'src/app/shared/functions/notifications';
-import { take } from 'rxjs/operators';
-import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   templateUrl: './dashboard.component.html',
@@ -28,7 +26,6 @@ export class DashboardComponent {
   totalEtiquetas = 0;
   totalResponsaveis = 0;
   alert: Tasks[] = [];
-
   constructor(
     public tasksService: TasksService,
     public etiquetasService: EtiquetasService,

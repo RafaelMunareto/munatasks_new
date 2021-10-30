@@ -1,5 +1,4 @@
 /* eslint-disable arrow-body-style */
-/* eslint-disable @typescript-eslint/no-inferrable-types */
 import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { find } from 'lodash';
@@ -9,10 +8,11 @@ import { find } from 'lodash';
 })
 export class CurrentPlatformService {
 
-    isDevice: boolean = false;
+    isDevice = false;
 
     constructor(
-        private platform: Platform, ) {
+        private platform: Platform)
+         {
           this.setPlatform();
          }
 

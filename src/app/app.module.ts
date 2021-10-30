@@ -1,3 +1,5 @@
+import { CurrentPlatformService } from 'src/app/shared/services/current-plataform.service';
+import { VersaoModule } from './shared/components/versao/versao.module';
 import { ResponsavelService } from './pages/responsaveis/services/responsavel.service';
 import { AppRoutingModule } from './app-routing.module';
 import { NgModule } from '@angular/core';
@@ -20,6 +22,7 @@ import { AlertController } from '@ionic/angular';
   imports: [
     CoreModule,
     AppRoutingModule,
+    VersaoModule,
     BrowserAnimationsModule,
     StoreModule.forRoot(
       {
@@ -41,7 +44,8 @@ import { AlertController } from '@ionic/angular';
     EtiquetasService,
     ResponsavelService,
     LocalNotifications,
-    AlertController
+    AlertController,
+    CurrentPlatformService,
   ],
 
   bootstrap: [AppComponent],

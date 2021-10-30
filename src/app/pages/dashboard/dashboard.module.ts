@@ -1,3 +1,4 @@
+import { VersaoModule } from './../../shared/components/versao/versao.module';
 import { DashboardComponent } from './dashboard.component';
 import { NgModule } from '@angular/core';
 
@@ -10,7 +11,7 @@ import { TasksService } from './tasks/services/tasks.service';
 
 @NgModule({
   declarations: [DashboardComponent],
-  imports: [DashboardRoutingModule, SharedModule, ComponentsModule],
+  imports: [DashboardRoutingModule, SharedModule, ComponentsModule, VersaoModule],
   providers: [TasksService, EtiquetasService, ResponsavelService],
 })
 export class DashboardModule {}

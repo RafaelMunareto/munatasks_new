@@ -5,7 +5,7 @@ import { Injectable } from "@angular/core";
 import { LocalNotifications } from "@ionic-native/local-notifications/ngx";
 import { AlertController } from "@ionic/angular";
 import { select, Store } from "@ngrx/store";
-import { debounceTime, take } from "rxjs/operators";
+import { debounce, debounceTime, first, share, take } from "rxjs/operators";
 import { AddTasks } from "src/app/core/ngrx/actions/action-types";
 import { OverlayService } from "src/app/core/services/overlay.service";
 import { TasksService } from "src/app/pages/dashboard/tasks/services/tasks.service";
@@ -135,11 +135,10 @@ export class Notifications {
 
 
   public notificationsAcionar() {
-    setTimeout(() => {
-      this.store.pipe(select('tasks'), take(1)).subscribe((res) => {
+      this.store.pipe(select('tasks'), take(2), share(), debounceTime(600)).subscribe((res) => {
         this.simpleNotif((res.alert));
+        console.log(res.alert);
       });
-    },1000);
   }
 
 }

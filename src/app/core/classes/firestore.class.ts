@@ -1,4 +1,4 @@
-import { first } from 'rxjs/operators';
+import { first, take } from 'rxjs/operators';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
@@ -12,7 +12,7 @@ export abstract class Firestore<T extends { id: string }> {
   constructor(protected db: AngularFirestore) {}
 
   getAll(): Observable<T[]> {
-    return this.collection.valueChanges().pipe(first());
+    return this.collection.valueChanges().pipe(take(1));
   }
 
   get(id: string): Observable<T> {

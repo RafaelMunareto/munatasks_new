@@ -152,31 +152,37 @@ export class LoginPage implements OnInit {
     NativeBiometric.isAvailable().then((result: AvailableResult) => {
       const isAvailable =  result.isAvailable;
       const isFaceId=result.biometryType===BiometryType.FACE_ID;
-      if (isAvailable || isFaceId) {
+      try{
+        if (isAvailable || isFaceId) {
 
-        NativeBiometric.getCredentials({
-          server: 'http://www.munatasks.com',
-        }).then((credentials) => {
+          NativeBiometric.getCredentials({
+            server: 'http://www.munatasks.com',
+          }).then((credentials) => {
 
-            NativeBiometric.verifyIdentity({
-              reason: 'Para facilitar o login',
-              title: 'Log in',
-              subtitle: 'MunaTasks',
-              description: 'Acesso via digital.',
-            }).then(() => {
-              this.autenticate(provider, credentials);
-            })
-            .catch((err) => {
-              this.overlayService.toast({
-                message: err.message,
+              NativeBiometric.verifyIdentity({
+                reason: 'Para facilitar o login',
+                title: 'Log in',
+                subtitle: 'MunaTasks',
+                description: 'Acesso via digital.',
+              }).then(() => {
+                this.autenticate(provider, credentials);
+              })
+              .catch((err) => {
+                this.overlayService.toast({
+                  message: err.message,
+                });
               });
-            });
-           }).catch(async (err) => {
-              await this.overlayService.toast({
-                message: err.message,
+             }).catch(async (err) => {
+                await this.overlayService.toast({
+                  message: err.message,
+                });
               });
-            });
         }
+      }catch(e){
+        console.log(e);
+      }finally{
+        this.nt.notificationsAcionar();
+      }
     });
   }
 
@@ -189,7 +195,9 @@ export class LoginPage implements OnInit {
       () => {
         this.navCtrl.navigateForward(
           this.activeRoute.snapshot.queryParamMap.get('redirect') || '/tasks'
-        ).then(() => this.callNgrxGet());
+        ).then(() => {
+          this.callNgrxGet();
+        });
       }
     );
   }

@@ -193,6 +193,15 @@ export class TasksListPage {
     }
   }
 
+  public placeholder(dado: string, flag: string)
+  {
+    if(flag === 'etiqueta' && dado === 'todos'){
+      return 'TODAS AS ETIQUETAS';
+    }else if(flag === 'responsavel' && dado === 'todos'){
+      return 'TODAS OS RESPONSÁVEIS';
+    }
+  }
+
   cor(): void {
     switch (this.faseParam) {
       case 'hoje':
@@ -253,4 +262,6 @@ export class TasksListPage {
       this.cor();
     });
   }
+
+
 }

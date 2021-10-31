@@ -112,6 +112,8 @@
     <ion-searchbar
       [(ngModel)]="filtro"
       animated="true"
+      [autocorrect]='true'
+      [debounce]='500'
       mode='ios'
       placeholder='Procurar'
     ></ion-searchbar>

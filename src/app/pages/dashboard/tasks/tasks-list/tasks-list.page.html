@@ -14,7 +14,7 @@
     >
       <ion-select
         (ionChange)="changeSelectResponsavel($event)"
-        [placeholder]="responsavelParam | titlecase"
+        [placeholder]="placeholder(responsavelParam, 'responsavel') || 'Todos os responsáveis' | uppercase"
         interface="action-sheet"
         okText="OK"
         cancelText="Cancelar"
@@ -36,7 +36,7 @@
       </ion-select>
       <ion-select
         (ionChange)="changeSelect($event)"
-        [placeholder]="etiquetaParam | titlecase"
+        [placeholder]="placeholder(etiquetaParam, 'etiqueta') || 'Todas as etiquetas'  | uppercase"
         interface="action-sheet"
         okText="OK"
         cancelText="Cancelar"

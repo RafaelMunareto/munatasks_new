@@ -3,7 +3,6 @@ import {
   AddSelectionFase,
   AddSelectionResponsavel,
   clearSelectionEtiqueta,
-  ClearSelectionFase,
   ClearSelectionResponsavel,
   RemoveEtiquetas,
 } from './../../../core/ngrx/actions/action-types';
@@ -36,6 +35,9 @@ export class HomePageComponent {
   ) {}
 
   async ionViewDidEnter(): Promise<void> {
+    this.store.dispatch(clearSelectionEtiqueta());
+    this.store.dispatch(ClearSelectionResponsavel());
+
     setTimeout(() => {
       this.etiquetas$ = this.store.pipe(
         select('etiquetas'),
@@ -45,6 +47,7 @@ export class HomePageComponent {
       this.store.pipe(select('tasks')).subscribe((res: any) => {
         this.contador = res.contador;
       });
+
     }, 700);
   }
 
@@ -99,4 +102,5 @@ export class HomePageComponent {
       );
     }
   }
+
 }

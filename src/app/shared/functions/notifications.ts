@@ -6,8 +6,8 @@ import { formatDate } from "@angular/common";
 import { Injectable } from "@angular/core";
 import { LocalNotifications } from "@ionic-native/local-notifications/ngx";
 import { AlertController } from "@ionic/angular";
-import { select, Store } from "@ngrx/store";
-import { debounce, debounceTime, first, share, take } from "rxjs/operators";
+import { Store } from "@ngrx/store";
+import { debounceTime, take } from "rxjs/operators";
 import { AddTasks } from "src/app/core/ngrx/actions/action-types";
 import { OverlayService } from "src/app/core/services/overlay.service";
 import { TasksService } from "src/app/pages/dashboard/tasks/services/tasks.service";
@@ -139,6 +139,7 @@ export class Notifications {
 
 
   public notificationsAcionar() {
+    let alert = [];
     this.authService.authState$.subscribe((user) => {
       if (user) {
          this.bd.collection(`/users/${user.uid}/tasks`, (ref) =>
@@ -147,12 +148,15 @@ export class Notifications {
           .orderBy('data', 'asc')
           .orderBy('title', 'asc')
         ).valueChanges()
-        .pipe(take(1), first(), debounceTime(1000))
+        .pipe(take(1), debounceTime(1000))
         .subscribe((res) => {
-          this.simpleNotif(res);
+          alert = res;
         });
       }
     });
+    setTimeout(() => {
+      this.simpleNotif(alert);
+    },1000);
   }
 
 }

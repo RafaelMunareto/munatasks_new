@@ -1,3 +1,5 @@
+import { AuthService } from 'src/app/core/services/auth.service';
+import { AngularFirestore } from '@angular/fire/firestore';
 /* eslint-disable @typescript-eslint/quotes */
 /* eslint-disable prefer-const */
 import { formatDate } from "@angular/common";
@@ -23,6 +25,8 @@ export class Notifications {
     public localNotifications: LocalNotifications,
     public alertController: AlertController,
     private tasksService: TasksService,
+    private bd: AngularFirestore,
+    private authService: AuthService,
     private overlayService: OverlayService,
     private store: Store<any>
   ){}
@@ -98,7 +102,7 @@ export class Notifications {
     });
   }
 
-  async simpleNotif(tasks: Tasks[]) {
+  async simpleNotif(tasks: any[]) {
     if (tasks !== undefined) {
       for (let task of tasks) {
         await this.presentAlert(task);
@@ -135,10 +139,20 @@ export class Notifications {
 
 
   public notificationsAcionar() {
-      this.store.pipe(select('tasks'), take(2), share(), debounceTime(600)).subscribe((res) => {
-        this.simpleNotif((res.alert));
-        console.log(res.alert);
-      });
+    this.authService.authState$.subscribe((user) => {
+      if (user) {
+         this.bd.collection(`/users/${user.uid}/tasks`, (ref) =>
+          ref.where('data', '<', formatDate(new Date(), "yyyy-MM-dd", 'en'))
+          .where('done', '==', false)
+          .orderBy('data', 'asc')
+          .orderBy('title', 'asc')
+        ).valueChanges()
+        .pipe(take(1), first(), debounceTime(1000))
+        .subscribe((res) => {
+          this.simpleNotif(res);
+        });
+      }
+    });
   }
 
 }

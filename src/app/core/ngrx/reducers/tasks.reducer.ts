@@ -16,7 +16,6 @@ export function taskReducer(state = task, action: ActionModel) {
         ...action.payload,
       ].sort((a, b) => a.data - b.data);
       const contador = [contadorAction(tasks)];
-      const alert = alertAction(tasks);
       return {
         ...state,
         contador,
@@ -28,7 +27,6 @@ export function taskReducer(state = task, action: ActionModel) {
     case ActionTypes.RemoveTasks: {
       const tasks = state.tasks.filter((res: any) => res.id !== action.payload);
       const contador = [contadorAction(tasks)];
-      const alert = [alertAction(tasks)];
       return {
         ...state,
         tasks,
@@ -75,16 +73,5 @@ export function taskReducer(state = task, action: ActionModel) {
       vencidos: vencidos,
     };
     return resultado;
-  }
-
-  function alertAction(tasks: Tasks[]) {
-    const agora = formatDate(new Date(), "yyyy-MM-dd", 'en');
-
-    const alert = tasks.filter(
-      (r) =>
-        formatDate(r.data, "yyyy-MM-dd", 'en') < agora &&
-        !r.done
-    );
-    return alert;
   }
 }

@@ -43,22 +43,16 @@ export class DashboardComponent {
     });
     //condicao para executar o ngrx tem tb no appComponente
     this.tasksService.getAll().subscribe((res) => {
-      if (res.length !== this.totalTaks) {
         this.store.dispatch(ClearTasks());
         this.store.dispatch(AddTasks(res));
-      }
     });
     this.etiquetasService.getAll().subscribe((res) => {
-      if (res.length !== this.totalEtiquetas) {
         this.store.dispatch(ClearEtiquetas());
         this.store.dispatch(AddEtiquetas(res));
-      }
     });
     this.responsaveisService.getAll().subscribe((res) => {
-      if (res.length !== this.totalResponsaveis) {
         this.store.dispatch(ClearResponsavel());
         this.store.dispatch(AddResponsavel(res));
-      }
     });
   }
 }

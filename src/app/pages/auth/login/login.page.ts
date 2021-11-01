@@ -152,7 +152,6 @@ export class LoginPage implements OnInit {
     NativeBiometric.isAvailable().then((result: AvailableResult) => {
       const isAvailable =  result.isAvailable;
       const isFaceId=result.biometryType===BiometryType.FACE_ID;
-      try{
         if (isAvailable || isFaceId) {
 
           NativeBiometric.getCredentials({
@@ -172,34 +171,38 @@ export class LoginPage implements OnInit {
                   message: err.message,
                 });
               });
-             }).catch(async (err) => {
+              }).catch(async (err) => {
                 await this.overlayService.toast({
                   message: err.message,
                 });
               });
         }
-      }catch(e){
-        console.log(e);
-      }finally{
-        this.nt.notificationsAcionar();
-      }
     });
   }
 
-  private autenticate(provider, credentials?){
-    this.authService.authenticate({
-      isSignIn: this.configs.isSignIn,
-      user: {email: credentials.username, password: credentials.password},
-      provider,
-    }).then(
-      () => {
-        this.navCtrl.navigateForward(
-          this.activeRoute.snapshot.queryParamMap.get('redirect') || '/tasks'
-        ).then(() => {
-          this.callNgrxGet();
-        });
-      }
-    );
+  private async autenticate(provider, credentials?){
+    const loading = await this.overlayService.loading();
+
+    try{
+      this.authService.authenticate({
+        isSignIn: this.configs.isSignIn,
+        user: {email: credentials.username, password: credentials.password},
+        provider,
+      }).then(
+        () => {
+          this.navCtrl.navigateForward(
+            this.activeRoute.snapshot.queryParamMap.get('redirect') || '/tasks'
+          ).then(() => {
+            this.callNgrxGet();
+          });
+        }
+      );
+    }catch(e){
+      console.log(e);
+    }finally{
+      this.nt.notificationsAcionar();
+      loading.dismiss();
+    }
   }
   private createForm(): void {
     this.authForm = this.fb.group({

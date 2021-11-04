@@ -1,22 +1,21 @@
-import { AuthService } from 'src/app/core/services/auth.service';
-import { AngularFirestore } from '@angular/fire/firestore';
 /* eslint-disable @typescript-eslint/quotes */
 /* eslint-disable prefer-const */
-import { formatDate } from "@angular/common";
-import { Injectable } from "@angular/core";
-import { LocalNotifications } from "@ionic-native/local-notifications/ngx";
-import { AlertController } from "@ionic/angular";
-import { Store } from "@ngrx/store";
-import { debounceTime, take } from "rxjs/operators";
-import { AddTasks } from "src/app/core/ngrx/actions/action-types";
-import { OverlayService } from "src/app/core/services/overlay.service";
-import { TasksService } from "src/app/pages/dashboard/tasks/services/tasks.service";
-import { Tasks } from "../model/tasks.model";
+import { AuthService } from 'src/app/core/services/auth.service';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { formatDate } from '@angular/common';
+import { Injectable } from '@angular/core';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { AlertController } from '@ionic/angular';
+import { Store } from '@ngrx/store';
+import { debounceTime, take } from 'rxjs/operators';
+import { AddTasks } from 'src/app/core/ngrx/actions/action-types';
+import { OverlayService } from 'src/app/core/services/overlay.service';
+import { TasksService } from 'src/app/pages/dashboard/tasks/services/tasks.service';
+import { Tasks } from '../model/tasks.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class Notifications {
   alert: Tasks[] = [];
   radio: any;
@@ -29,13 +28,13 @@ export class Notifications {
     private authService: AuthService,
     private overlayService: OverlayService,
     private store: Store<any>
-  ){}
+  ) {}
 
   async presentAlert(task: Tasks) {
     if (task.responsavel) {
       const alert = await this.alertController.create({
         cssClass: 'my-custom-class',
-        header: `Tarefa de ${task.tipo} está vencida` ,
+        header: `Tarefa de ${task.tipo} está vencida`,
         subHeader: `${task.responsavel[0] ?? ''} ${task.responsavel[1] ?? ''} ${
           task.responsavel[2] ?? ''
         } ${task.responsavel[3] ?? ''}`,
@@ -58,7 +57,7 @@ export class Notifications {
             label: 'Adiar 2 dias',
             value: 172800000,
             handler: () => {
-              this.radio = 172800000  ;
+              this.radio = 172800000;
             },
           },
           {
@@ -94,11 +93,11 @@ export class Notifications {
       group: task.tipo,
       color: '#F4F4F4',
       data: { secret: task.id },
-      icon: "https://munatasks.com/assets/icon/favicon.png",
-      smallIcon:  "res://notification-logo",
+      icon: 'https://munatasks.com/assets/icon/favicon.png',
+      smallIcon: 'res://notification-logo',
       led: 'FA962A',
-      vibrate:true,
-      foreground: true
+      vibrate: true,
+      foreground: true,
     });
   }
 
@@ -112,16 +111,11 @@ export class Notifications {
   }
 
   async onHoje(task: Tasks, time: number) {
-
-    if(!time){
+    if (!time) {
       time = 0;
     }
 
-    const date = formatDate(
-      new Date().getTime() + time,
-      "yyyy-MM-dd",
-      'en'
-    );
+    const date = formatDate(new Date().getTime() + time, 'yyyy-MM-dd', 'en');
     const taskToUpdate = {
       ...task,
       data: date,
@@ -137,26 +131,38 @@ export class Notifications {
     });
   }
 
-
   public notificationsAcionar() {
     let alert = [];
+    const data = formatDate(new Date(), 'yyyy-MM-dd', 'en');
+
     this.authService.authState$.subscribe((user) => {
       if (user) {
-         this.bd.collection(`/users/${user.uid}/tasks`, (ref) =>
-          ref.where('data', '<', formatDate(new Date(), "yyyy-MM-dd", 'en'))
-          .where('done', '==', false)
-          .orderBy('data', 'asc')
-          .orderBy('title', 'asc')
-        ).valueChanges()
-        .pipe(take(1), debounceTime(1000))
-        .subscribe((res) => {
-          alert = res;
-        });
+        this.bd
+          .collection(`/users/${user.uid}/tasks`, (ref) =>
+            ref
+              .where('done', '==', false)
+              .orderBy('data', 'asc')
+              .orderBy('title', 'asc')
+          )
+          .valueChanges()
+          .pipe(take(1), debounceTime(1000))
+          .subscribe((res) => {
+            alert = res.filter(
+              (r: any) =>
+                this.convertData(formatDate(r.data, 'yyyy-MM-dd', 'en')) <
+                this.convertData(data)
+            );
+          });
       }
     });
     setTimeout(() => {
       this.simpleNotif(alert);
-    },1000);
+    }, 1000);
   }
 
+  private convertData(data) {
+    const value = new Date(data);
+
+    return value;
+  }
 }

@@ -129,7 +129,7 @@ export class LoginPage implements OnInit {
       });
     } finally {
       loading.dismiss();
-      //this.nt.notificationsAcionar();
+      this.nt.notificationsAcionar();
     }
   }
 

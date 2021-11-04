@@ -52,7 +52,11 @@ export function taskReducer(state = task, action: ActionModel) {
       .length.toString();
 
     const vencidos = tasks
-      .filter((r) => formatDate(r.data, 'YYYY-MM-DD', 'en') <= data && !r.done)
+      .filter(
+        (r) =>
+          convertData(formatDate(r.data, 'yyyy-MM-dd', 'en')) <
+            convertData(data) && !r.done
+      )
       .length.toString();
 
     const abertos = tasks.filter((r) => r.done === false).length.toString();
@@ -72,5 +76,11 @@ export function taskReducer(state = task, action: ActionModel) {
       vencidos: vencidos,
     };
     return resultado;
+  }
+
+  function convertData(data) {
+    const value = new Date(data);
+
+    return value;
   }
 }

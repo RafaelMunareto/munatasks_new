@@ -1,6 +1,4 @@
-import {
-  AddSelectionEtiqueta,
-} from './../../../../core/ngrx/actions/action-types';
+import { AddSelectionEtiqueta } from './../../../../core/ngrx/actions/action-types';
 /* eslint-disable @typescript-eslint/no-shadow */
 import {
   AddSelectionResponsavel,
@@ -84,7 +82,9 @@ export class TasksListPage {
         break;
       case 'vencidos':
         newTasks = newTasks.filter(
-          (r) => formatDate(r.data, 'yyyy-MM-dd', 'en') < data && !r.done
+          (r) =>
+            this.convertData(formatDate(r.data, 'yyyy-MM-dd', 'en')) <
+              this.convertData(data) && !r.done
         );
         break;
       case 'abertos':
@@ -97,7 +97,6 @@ export class TasksListPage {
         newTasks = newTasks.filter((r) => r.sinalizado && !r.done);
     }
     if (Boolean(this.etiquetaParam)) {
-
       newTasks = newTasks.filter(
         (r) =>
           this.etiquetaParam === 'todos' ||
@@ -193,11 +192,10 @@ export class TasksListPage {
     }
   }
 
-  public placeholder(dado: string, flag: string)
-  {
-    if(flag === 'etiqueta' && dado === 'todos'){
+  public placeholder(dado: string, flag: string) {
+    if (flag === 'etiqueta' && dado === 'todos') {
       return 'TODAS AS ETIQUETAS';
-    }else if(flag === 'responsavel' && dado === 'todos'){
+    } else if (flag === 'responsavel' && dado === 'todos') {
       return 'TODAS OS RESPONSÁVEIS';
     }
   }
@@ -263,5 +261,9 @@ export class TasksListPage {
     });
   }
 
+  private convertData(data) {
+    const value = new Date(data);
 
+    return value;
+  }
 }

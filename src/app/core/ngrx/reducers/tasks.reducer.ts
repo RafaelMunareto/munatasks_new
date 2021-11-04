@@ -47,13 +47,12 @@ export function taskReducer(state = task, action: ActionModel) {
   function contadorAction(tasks: Tasks[]) {
     const data = formatDate(new Date(), 'yyyy-MM-dd', 'en');
     const todos = tasks.length.toString();
-
     const hoje = tasks
       .filter((r) => formatDate(r.data, 'yyyy-MM-dd', 'en') === data && !r.done)
       .length.toString();
 
     const vencidos = tasks
-      .filter((r) => formatDate(r.data, 'yyyy-MM-dd', 'en') < data && !r.done)
+      .filter((r) => formatDate(r.data, 'YYYY-MM-DD', 'en') <= data && !r.done)
       .length.toString();
 
     const abertos = tasks.filter((r) => r.done === false).length.toString();

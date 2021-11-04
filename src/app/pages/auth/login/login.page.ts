@@ -17,7 +17,11 @@ import {
   NativeBiometric,
 } from 'capacitor-native-biometric';
 import { finalize, take } from 'rxjs/operators';
-import { AddEtiquetas, AddResponsavel, AddTasks } from 'src/app/core/ngrx/actions/action-types';
+import {
+  AddEtiquetas,
+  AddResponsavel,
+  AddTasks,
+} from 'src/app/core/ngrx/actions/action-types';
 
 import { AuthService } from 'src/app/core/services/auth.service';
 import { AuthProvider } from 'src/app/core/services/auth.types';
@@ -38,7 +42,6 @@ export class LoginPage implements OnInit {
   authForm: FormGroup;
   authProviders = AuthProvider;
   digitalChange = false;
-
 
   configs = {
     isSignIn: true,
@@ -115,55 +118,58 @@ export class LoginPage implements OnInit {
         user: this.authForm.value,
         provider,
       });
-      this.navCtrl.navigateForward(
-        this.activeRoute.snapshot.queryParamMap.get('redirect') || '/tasks'
-      ).then(() => this.callNgrxGet());
+      this.navCtrl
+        .navigateForward(
+          this.activeRoute.snapshot.queryParamMap.get('redirect') || '/tasks'
+        )
+        .then(() => this.callNgrxGet());
     } catch (e) {
       await this.overlayService.toast({
         message: e.message,
       });
     } finally {
       loading.dismiss();
-      this.nt.notificationsAcionar();
+      //this.nt.notificationsAcionar();
     }
   }
 
   setCredential(event) {
-   this.digitalChange = event.detail.checked;
+    this.digitalChange = event.detail.checked;
     NativeBiometric.setCredentials({
       username: this.authForm.get('email').value,
-      password:  this.authForm.get('password').value,
+      password: this.authForm.get('password').value,
       server: 'http://www.munatasks.com',
-    }).then().finally( () => this.digitalChange = true);
+    })
+      .then()
+      .finally(() => (this.digitalChange = true));
   }
 
   deleteCredential() {
     NativeBiometric.deleteCredentials({
       server: 'http://www.munatasks.com',
-    }).then(()=> {
+    }).then(() => {
       this.overlayService.toast({
         message: 'Login e senha deletados!',
       });
     });
   }
 
-
   async checkCredential(provider: AuthProvider) {
     NativeBiometric.isAvailable().then((result: AvailableResult) => {
-      const isAvailable =  result.isAvailable;
-      const isFaceId=result.biometryType===BiometryType.FACE_ID;
-        if (isAvailable || isFaceId) {
-
-          NativeBiometric.getCredentials({
-            server: 'http://www.munatasks.com',
-          }).then((credentials) => {
-
-              NativeBiometric.verifyIdentity({
-                reason: 'Para facilitar o login',
-                title: 'Log in',
-                subtitle: 'MunaTasks',
-                description: 'Acesso via digital.',
-              }).then(() => {
+      const isAvailable = result.isAvailable;
+      const isFaceId = result.biometryType === BiometryType.FACE_ID;
+      if (isAvailable || isFaceId) {
+        NativeBiometric.getCredentials({
+          server: 'http://www.munatasks.com',
+        })
+          .then((credentials) => {
+            NativeBiometric.verifyIdentity({
+              reason: 'Para facilitar o login',
+              title: 'Log in',
+              subtitle: 'MunaTasks',
+              description: 'Acesso via digital.',
+            })
+              .then(() => {
                 this.autenticate(provider, credentials);
               })
               .catch((err) => {
@@ -171,35 +177,39 @@ export class LoginPage implements OnInit {
                   message: err.message,
                 });
               });
-              }).catch(async (err) => {
-                await this.overlayService.toast({
-                  message: err.message,
-                });
-              });
-        }
+          })
+          .catch(async (err) => {
+            await this.overlayService.toast({
+              message: err.message,
+            });
+          });
+      }
     });
   }
 
-  private async autenticate(provider, credentials?){
+  private async autenticate(provider, credentials?) {
     const loading = await this.overlayService.loading();
 
-    try{
-      this.authService.authenticate({
-        isSignIn: this.configs.isSignIn,
-        user: {email: credentials.username, password: credentials.password},
-        provider,
-      }).then(
-        () => {
-          this.navCtrl.navigateForward(
-            this.activeRoute.snapshot.queryParamMap.get('redirect') || '/tasks'
-          ).then(() => {
-            this.callNgrxGet();
-          });
-        }
-      );
-    }catch(e){
+    try {
+      this.authService
+        .authenticate({
+          isSignIn: this.configs.isSignIn,
+          user: { email: credentials.username, password: credentials.password },
+          provider,
+        })
+        .then(() => {
+          this.navCtrl
+            .navigateForward(
+              this.activeRoute.snapshot.queryParamMap.get('redirect') ||
+                '/tasks'
+            )
+            .then(() => {
+              this.callNgrxGet();
+            });
+        });
+    } catch (e) {
       console.log(e);
-    }finally{
+    } finally {
       this.nt.notificationsAcionar();
       loading.dismiss();
     }
@@ -211,25 +221,16 @@ export class LoginPage implements OnInit {
     });
   }
   private callNgrxGet() {
-    this.etiquetasService
-      .getAll()
-      .subscribe((res) => {
-        this.store.dispatch(AddEtiquetas(res));
-      });
+    this.etiquetasService.getAll().subscribe((res) => {
+      this.store.dispatch(AddEtiquetas(res));
+    });
 
-    this.taskService
-      .getAll()
-      .subscribe((res: any) => {
-        this.store.dispatch(AddTasks(res));
-      });
+    this.taskService.getAll().subscribe((res: any) => {
+      this.store.dispatch(AddTasks(res));
+    });
 
-    this.responsavelService
-      .getAll()
-      .subscribe((res) => {
-        this.store.dispatch(AddResponsavel(res));
-      });
-
-
+    this.responsavelService.getAll().subscribe((res) => {
+      this.store.dispatch(AddResponsavel(res));
+    });
   }
-
 }

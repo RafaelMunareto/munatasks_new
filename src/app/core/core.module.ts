@@ -21,6 +21,9 @@ import { environment } from 'src/environments/environment';
     AngularFirestoreModule.enablePersistence(),
   ],
   exports: [BrowserModule, IonicModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, AppVersion],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    AppVersion,
+  ],
 })
 export class CoreModule {}

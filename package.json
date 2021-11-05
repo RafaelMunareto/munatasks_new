@@ -8,12 +8,12 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
-    "build_prod": "npm run build -- --prod --output-hashing=all",
+    "build_prod": "npm run build --production --output-hashing=all",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "resources": "npx cordova-res ios --skip-config --copy && npx cordova-res android --skip-config --copy",
     "resources_cordova": "npx cordova-res ios --skip-config --copy && npx cordova-res android --skip-config --copy",
-    "deploy:firebase": "npm run build -- --prod --output-hashing=all && npx firebase deploy"
+    "deploy:firebase": "npm run build --production --output-hashing=all && npx firebase deploy"
   },
   "private": true,
   "dependencies": {

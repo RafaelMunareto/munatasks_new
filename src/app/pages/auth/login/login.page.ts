@@ -132,7 +132,6 @@ export class LoginPage implements OnInit {
   async onSubmit(provider: AuthProvider): Promise<void> {
     const loading = await this.overlayService.loading();
     try {
-      this.set('pass', { email: this.email, password: this.password });
       const credentials = await this.authService.authenticate({
         isSignIn: this.configs.isSignIn,
         user: this.authForm.value,
@@ -148,8 +147,9 @@ export class LoginPage implements OnInit {
         message: e.message,
       });
     } finally {
-      loading.dismiss();
       this.nt.notificationsAcionar();
+      this.set('pass', { email: this.email, password: this.password });
+      loading.dismiss();
     }
   }
 
@@ -179,35 +179,37 @@ export class LoginPage implements OnInit {
   }
 
   async checkCredential() {
-    NativeBiometric.isAvailable().then((result: AvailableResult) => {
-      const isAvailable = result.isAvailable;
-      const isFaceId = result.biometryType === BiometryType.FACE_ID;
-      if (isAvailable || isFaceId) {
-        NativeBiometric.getCredentials({
-          server: 'https://munatasks.com',
-        })
-          .then(() => {
-            NativeBiometric.verifyIdentity({
-              reason: '',
-              title: 'Log in',
-              subtitle: 'MunaTasks',
-              description: '',
-            })
-              .then(() => {
-                this.autenticate(AuthProvider.Email);
-              })
-              .catch((err) => {
-                this.overlayService.toast({
-                  message: this.errorPtBr.changeErrorBiometric(err.message),
-                });
-              });
+    this.setCredential().then(() => {
+      NativeBiometric.isAvailable().then((result: AvailableResult) => {
+        const isAvailable = result.isAvailable;
+        const isFaceId = result.biometryType === BiometryType.FACE_ID;
+        if (isAvailable || isFaceId) {
+          NativeBiometric.getCredentials({
+            server: 'https://munatasks.com',
           })
-          .catch(async (err) => {
-            await this.overlayService.toast({
-              message: this.errorPtBr.changeErrorBiometric(err.message),
+            .then(() => {
+              NativeBiometric.verifyIdentity({
+                reason: '',
+                title: 'Log in',
+                subtitle: 'MunaTasks',
+                description: '',
+              })
+                .then(() => {
+                  this.autenticate(AuthProvider.Email);
+                })
+                .catch((err) => {
+                  this.overlayService.toast({
+                    message: this.errorPtBr.changeErrorBiometric(err.message),
+                  });
+                });
+            })
+            .catch(async (err) => {
+              await this.overlayService.toast({
+                message: this.errorPtBr.changeErrorBiometric(err.message),
+              });
             });
-          });
-      }
+        }
+      });
     });
   }
 
@@ -217,7 +219,10 @@ export class LoginPage implements OnInit {
       this.authService
         .authenticate({
           isSignIn: this.configs.isSignIn,
-          user: { email: this.emailStorage, password: this.passStorage },
+          user: {
+            email: this.emailStorage || this.email,
+            password: this.passStorage || this.password,
+          },
           provider,
         })
         .then(() => {

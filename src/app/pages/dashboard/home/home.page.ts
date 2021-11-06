@@ -47,7 +47,6 @@ export class HomePageComponent {
       this.store.pipe(select('tasks')).subscribe((res: any) => {
         this.contador = res.contador;
       });
-
     }, 700);
   }
 
@@ -102,5 +101,4 @@ export class HomePageComponent {
       );
     }
   }
-
 }

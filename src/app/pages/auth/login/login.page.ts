@@ -229,7 +229,7 @@ export class LoginPage implements OnInit {
             });
         });
     } catch (e) {
-      console.log(e);
+      await this.errorPtBr.erro(e);
     } finally {
       loading.dismiss();
     }

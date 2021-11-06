@@ -16,6 +16,8 @@ export class ErrorPtBr {
         return 'Sem login salvo, faça o primeiro login';
       case 'Verification error: Cancel':
         return 'Ação cancelada';
+      case 'Verification failed':
+        return 'Digital não identificada';
       default:
         return erro;
     }

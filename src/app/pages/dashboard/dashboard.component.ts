@@ -29,7 +29,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
   contador: any[];
   totalTaks = 0;
   totalEtiquetas = 0;
@@ -43,15 +43,11 @@ export class DashboardComponent implements OnInit {
     private nt: Notifications,
     private authService: AuthService,
     private bd: AngularFirestore
-  ) {}
-
-  ngOnInit(): void {
+  ) {
     this.notificationsAcionar();
   }
 
   ionViewDidEnter() {
-    this.notificationsAcionar().then(() => this.nt.simpleNotif(this.alert));
-
     //chamada do tasks
     this.store.pipe(select('tasks')).subscribe((res: any) => {
       this.contador = res.contador;
@@ -61,6 +57,7 @@ export class DashboardComponent implements OnInit {
     this.tasksService.getAll().subscribe((res) => {
       this.store.dispatch(ClearTasks());
       this.store.dispatch(AddTasks(res));
+      this.notificationsAcionar();
     });
     this.etiquetasService.getAll().subscribe((res) => {
       this.store.dispatch(ClearEtiquetas());
@@ -70,6 +67,7 @@ export class DashboardComponent implements OnInit {
       this.store.dispatch(ClearResponsavel());
       this.store.dispatch(AddResponsavel(res));
     });
+    this.nt.simpleNotif(this.alert);
   }
 
   public async notificationsAcionar() {
@@ -85,7 +83,7 @@ export class DashboardComponent implements OnInit {
               .orderBy('title', 'asc')
           )
           .valueChanges()
-          .pipe(take(1), debounceTime(1000))
+          .pipe(take(1))
           .subscribe((res) => {
             this.alert = res.filter(
               (r: any) =>

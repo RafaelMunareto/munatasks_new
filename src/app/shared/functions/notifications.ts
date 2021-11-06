@@ -131,7 +131,7 @@ export class Notifications {
     });
   }
 
-  public notificationsAcionar() {
+  public async notificationsAcionar() {
     let alert = [];
     const data = formatDate(new Date(), 'yyyy-MM-dd', 'en');
 
@@ -152,12 +152,10 @@ export class Notifications {
                 this.convertData(formatDate(r.data, 'yyyy-MM-dd', 'en')) <
                 this.convertData(data)
             );
+            this.simpleNotif(alert);
           });
       }
     });
-    setTimeout(() => {
-      this.simpleNotif(alert);
-    }, 1000);
   }
 
   private convertData(data) {

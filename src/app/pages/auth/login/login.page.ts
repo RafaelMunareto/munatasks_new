@@ -147,8 +147,8 @@ export class LoginPage implements OnInit {
         message: e.message,
       });
     } finally {
-      this.nt.notificationsAcionar();
-      this.set('pass', { email: this.email, password: this.password });
+      await this.nt.notificationsAcionar();
+      await this.set('pass', { email: this.email, password: this.password });
       loading.dismiss();
     }
   }

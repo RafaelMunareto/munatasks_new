@@ -36,7 +36,6 @@ import { TasksService } from '../../dashboard/tasks/services/tasks.service';
 import { EtiquetasService } from '../../etiquetas/services/etiquetas.service';
 import { ResponsavelService } from '../../responsaveis/services/responsavel.service';
 import { Storage } from '@ionic/storage';
-import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-login',
@@ -80,8 +79,7 @@ export class LoginPage implements OnInit {
     private store: Store<any>,
     private storage: Storage,
     private nt: Notifications,
-    private errorPtBr: ErrorPtBr,
-    private bd: AngularFirestore
+    private errorPtBr: ErrorPtBr
   ) {
     this.createForm();
   }
@@ -182,7 +180,7 @@ export class LoginPage implements OnInit {
 
   async checkCredential() {
     this.setCredential().then(() => {
-      NativeBiometric.isAvailable().then((result: AvailableResult) => {
+      NativeBiometric.isAvailable().then(async (result: AvailableResult) => {
         const isAvailable = result.isAvailable;
         const isFaceId = result.biometryType === BiometryType.FACE_ID;
         if (isAvailable || isFaceId) {
@@ -196,8 +194,14 @@ export class LoginPage implements OnInit {
                 subtitle: 'MunaTasks',
                 description: '',
               })
-                .then(() => {
-                  this.autenticate(AuthProvider.Email);
+                .then(async () => {
+                  const loading = await this.overlayService.loading();
+
+                  this.autenticate(AuthProvider.Email).then(() =>
+                    setTimeout(() => {
+                      loading.dismiss();
+                    }, 800)
+                  );
                 })
                 .catch((err) => {
                   this.errorPtBr.erro(err);
@@ -211,7 +215,7 @@ export class LoginPage implements OnInit {
     });
   }
 
-  notificationsAcionar() {
+  async notificationsAcionar() {
     const data = formatDate(new Date(), 'yyyy-MM-dd', 'en');
 
     this.store.pipe(select('tasks'), take(2)).subscribe((res: any) => {
@@ -225,7 +229,6 @@ export class LoginPage implements OnInit {
   }
 
   private async autenticate(provider) {
-    const loading = await this.overlayService.loading();
     try {
       this.authService
         .authenticate({
@@ -250,7 +253,6 @@ export class LoginPage implements OnInit {
       await this.errorPtBr.erro(e);
     } finally {
       await this.notificationsAcionar();
-      loading.dismiss();
     }
   }
   private createForm(): void {

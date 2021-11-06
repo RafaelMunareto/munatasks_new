@@ -143,11 +143,8 @@ export class LoginPage implements OnInit {
         )
         .then(() => this.callNgrxGet());
     } catch (e) {
-      await this.overlayService.toast({
-        message: e.message,
-      });
+      await this.errorPtBr.erro(e);
     } finally {
-      await this.nt.notificationsAcionar();
       await this.set('pass', { email: this.email, password: this.password });
       loading.dismiss();
     }
@@ -198,15 +195,11 @@ export class LoginPage implements OnInit {
                   this.autenticate(AuthProvider.Email);
                 })
                 .catch((err) => {
-                  this.overlayService.toast({
-                    message: this.errorPtBr.changeErrorBiometric(err.message),
-                  });
+                  this.errorPtBr.erro(err);
                 });
             })
             .catch(async (err) => {
-              await this.overlayService.toast({
-                message: this.errorPtBr.changeErrorBiometric(err.message),
-              });
+              await this.errorPtBr.erro(err);
             });
         }
       });
@@ -238,7 +231,6 @@ export class LoginPage implements OnInit {
     } catch (e) {
       console.log(e);
     } finally {
-      this.nt.notificationsAcionar();
       loading.dismiss();
     }
   }

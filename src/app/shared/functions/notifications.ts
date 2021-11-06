@@ -130,37 +130,4 @@ export class Notifications {
       }!`,
     });
   }
-
-  public async notificationsAcionar() {
-    let alert = [];
-    const data = formatDate(new Date(), 'yyyy-MM-dd', 'en');
-
-    this.authService.authState$.subscribe((user) => {
-      if (user) {
-        this.bd
-          .collection(`/users/${user.uid}/tasks`, (ref) =>
-            ref
-              .where('done', '==', false)
-              .orderBy('data', 'asc')
-              .orderBy('title', 'asc')
-          )
-          .valueChanges()
-          .pipe(take(1), debounceTime(1000))
-          .subscribe((res) => {
-            alert = res.filter(
-              (r: any) =>
-                this.convertData(formatDate(r.data, 'yyyy-MM-dd', 'en')) <
-                this.convertData(data)
-            );
-            this.simpleNotif(alert);
-          });
-      }
-    });
-  }
-
-  private convertData(data) {
-    const value = new Date(data);
-
-    return value;
-  }
 }

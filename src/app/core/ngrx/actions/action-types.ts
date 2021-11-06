@@ -24,7 +24,6 @@ export enum ActionTypes {
   ClearSelectionEtiqueta = 'clearSelectionEtiqueta',
   ClearSelectionResponsavel = 'clearSelectionResponsavel',
   ClearSelectionFase = 'clearSelectionFase',
-
 }
 //tasks
 export const AddTasks = (task: any) => {

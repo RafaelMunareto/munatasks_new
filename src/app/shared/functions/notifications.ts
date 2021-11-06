@@ -104,8 +104,10 @@ export class Notifications {
   async simpleNotif(tasks: any[]) {
     if (tasks !== undefined) {
       for (let task of tasks) {
-        await this.presentAlert(task);
-        await this.notifications(task);
+        setTimeout(() => {
+          this.presentAlert(task);
+          this.notifications(task);
+        }, 600);
       }
     }
   }

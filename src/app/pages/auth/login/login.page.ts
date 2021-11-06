@@ -1,5 +1,4 @@
-import { ErrorPtBr } from './../../../shared/functions/errorPtBr';
-import { CacheService } from 'ionic-cache';
+import { debounceTime, finalize, map, share, take, tap } from 'rxjs/operators';
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable quote-props */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
@@ -12,20 +11,21 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 
 import {
   AvailableResult,
   BiometryType,
   NativeBiometric,
 } from 'capacitor-native-biometric';
-import { finalize, take } from 'rxjs/operators';
 import {
   AddEtiquetas,
   AddResponsavel,
   AddTasks,
 } from 'src/app/core/ngrx/actions/action-types';
 
+import { formatDate } from '@angular/common';
+import { ErrorPtBr } from './../../../shared/functions/errorPtBr';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { AuthProvider } from 'src/app/core/services/auth.types';
 import { Notifications } from 'src/app/shared/functions/notifications';
@@ -36,6 +36,7 @@ import { TasksService } from '../../dashboard/tasks/services/tasks.service';
 import { EtiquetasService } from '../../etiquetas/services/etiquetas.service';
 import { ResponsavelService } from '../../responsaveis/services/responsavel.service';
 import { Storage } from '@ionic/storage';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-login',
@@ -48,6 +49,7 @@ export class LoginPage implements OnInit {
     action: 'Login',
     actionChange: 'Cadastro',
   };
+  alert: any[] = [];
   authForm: FormGroup;
   authProviders = AuthProvider;
   digitalChange = false;
@@ -78,7 +80,8 @@ export class LoginPage implements OnInit {
     private store: Store<any>,
     private storage: Storage,
     private nt: Notifications,
-    private errorPtBr: ErrorPtBr
+    private errorPtBr: ErrorPtBr,
+    private bd: AngularFirestore
   ) {
     this.createForm();
   }
@@ -86,12 +89,13 @@ export class LoginPage implements OnInit {
   async ngOnInit() {
     await this.init();
     const redirect = this.activeRoute.snapshot.queryParamMap.get('redirect');
+
     if (this.currentPlatformService.isDevice) {
       await this._storage.get('pass').then((data) => {
         if (data) {
           this.emailStorage = data.email;
           this.passStorage = data.password;
-          this.setCredential().then(() => this.checkCredential());
+          this.checkCredential();
         }
       });
     }
@@ -146,6 +150,7 @@ export class LoginPage implements OnInit {
       await this.errorPtBr.erro(e);
     } finally {
       await this.set('pass', { email: this.email, password: this.password });
+      await this.notificationsAcionar();
       loading.dismiss();
     }
   }
@@ -206,6 +211,19 @@ export class LoginPage implements OnInit {
     });
   }
 
+  notificationsAcionar() {
+    const data = formatDate(new Date(), 'yyyy-MM-dd', 'en');
+
+    this.store.pipe(select('tasks'), take(2)).subscribe((res: any) => {
+      this.alert = res.tasks.filter(
+        (r: any) =>
+          this.convertData(formatDate(r.data, 'yyyy-MM-dd', 'en')) <
+            this.convertData(data) && !r.done
+      );
+      this.nt.simpleNotif(this.alert);
+    });
+  }
+
   private async autenticate(provider) {
     const loading = await this.overlayService.loading();
     try {
@@ -231,6 +249,7 @@ export class LoginPage implements OnInit {
     } catch (e) {
       await this.errorPtBr.erro(e);
     } finally {
+      await this.notificationsAcionar();
       loading.dismiss();
     }
   }
@@ -240,7 +259,7 @@ export class LoginPage implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
-  private callNgrxGet() {
+  private async callNgrxGet() {
     this.etiquetasService.getAll().subscribe((res) => {
       this.store.dispatch(AddEtiquetas(res));
     });
@@ -256,5 +275,11 @@ export class LoginPage implements OnInit {
 
   private set(key: string, value: any) {
     this._storage?.set(key, value);
+  }
+
+  private convertData(data) {
+    const value = new Date(data);
+
+    return value;
   }
 }

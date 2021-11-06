@@ -1,3 +1,6 @@
+import { ErrorPtBr } from './../../../shared/functions/errorPtBr';
+import { CacheService } from 'ionic-cache';
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable quote-props */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import { Component, OnInit } from '@angular/core';
@@ -32,6 +35,7 @@ import { OverlayService } from '../../../core/services/overlay.service';
 import { TasksService } from '../../dashboard/tasks/services/tasks.service';
 import { EtiquetasService } from '../../etiquetas/services/etiquetas.service';
 import { ResponsavelService } from '../../responsaveis/services/responsavel.service';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-login',
@@ -39,15 +43,17 @@ import { ResponsavelService } from '../../responsaveis/services/responsavel.serv
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  authForm: FormGroup;
-  authProviders = AuthProvider;
-  digitalChange = false;
-
   configs = {
     isSignIn: true,
     action: 'Login',
     actionChange: 'Cadastro',
   };
+  authForm: FormGroup;
+  authProviders = AuthProvider;
+  digitalChange = false;
+  emailStorage = '';
+  passStorage = '';
+  private _storage: Storage | null = null;
 
   private nameControl = new FormControl('', [
     Validators.required,
@@ -70,20 +76,33 @@ export class LoginPage implements OnInit {
     private etiquetasService: EtiquetasService,
     private responsavelService: ResponsavelService,
     private store: Store<any>,
-    private nt: Notifications
-  ) {}
-
-  ngOnInit() {
+    private storage: Storage,
+    private nt: Notifications,
+    private errorPtBr: ErrorPtBr
+  ) {
     this.createForm();
+  }
+
+  async ngOnInit() {
+    await this.init();
     const redirect = this.activeRoute.snapshot.queryParamMap.get('redirect');
+    if (this.currentPlatformService.isDevice) {
+      await this._storage.get('pass').then((data) => {
+        if (data) {
+          this.emailStorage = data.email;
+          this.passStorage = data.password;
+          this.setCredential().then(() => this.checkCredential());
+        }
+      });
+    }
   }
 
   get email(): any {
-    return this.authForm.get('email');
+    return this.authForm.get('email').value;
   }
 
   get password(): any {
-    return this.authForm.get('password');
+    return this.authForm.get('password').value;
   }
 
   get name(): any {
@@ -113,6 +132,7 @@ export class LoginPage implements OnInit {
   async onSubmit(provider: AuthProvider): Promise<void> {
     const loading = await this.overlayService.loading();
     try {
+      this.set('pass', { email: this.email, password: this.password });
       const credentials = await this.authService.authenticate({
         isSignIn: this.configs.isSignIn,
         user: this.authForm.value,
@@ -133,15 +153,19 @@ export class LoginPage implements OnInit {
     }
   }
 
-  setCredential(event) {
-    this.digitalChange = event.detail.checked;
-    NativeBiometric.setCredentials({
-      username: this.authForm.get('email').value,
-      password: this.authForm.get('password').value,
-      server: 'http://www.munatasks.com',
-    })
-      .then()
-      .finally(() => (this.digitalChange = true));
+  async setCredential() {
+    await this._storage.get('pass').then((res) => {
+      NativeBiometric.setCredentials({
+        username: res.email,
+        password: res.password,
+        server: 'https://munatasks.com',
+      });
+    });
+  }
+
+  async init() {
+    const storage = await this.storage.create();
+    this._storage = storage;
   }
 
   deleteCredential() {
@@ -154,47 +178,46 @@ export class LoginPage implements OnInit {
     });
   }
 
-  async checkCredential(provider: AuthProvider) {
+  async checkCredential() {
     NativeBiometric.isAvailable().then((result: AvailableResult) => {
       const isAvailable = result.isAvailable;
       const isFaceId = result.biometryType === BiometryType.FACE_ID;
       if (isAvailable || isFaceId) {
         NativeBiometric.getCredentials({
-          server: 'http://www.munatasks.com',
+          server: 'https://munatasks.com',
         })
-          .then((credentials) => {
+          .then(() => {
             NativeBiometric.verifyIdentity({
-              reason: 'Para facilitar o login',
+              reason: '',
               title: 'Log in',
               subtitle: 'MunaTasks',
-              description: 'Acesso via digital.',
+              description: '',
             })
               .then(() => {
-                this.autenticate(provider, credentials);
+                this.autenticate(AuthProvider.Email);
               })
               .catch((err) => {
                 this.overlayService.toast({
-                  message: err.message,
+                  message: this.errorPtBr.changeErrorBiometric(err.message),
                 });
               });
           })
           .catch(async (err) => {
             await this.overlayService.toast({
-              message: err.message,
+              message: this.errorPtBr.changeErrorBiometric(err.message),
             });
           });
       }
     });
   }
 
-  private async autenticate(provider, credentials?) {
+  private async autenticate(provider) {
     const loading = await this.overlayService.loading();
-
     try {
       this.authService
         .authenticate({
           isSignIn: this.configs.isSignIn,
-          user: { email: credentials.username, password: credentials.password },
+          user: { email: this.emailStorage, password: this.passStorage },
           provider,
         })
         .then(() => {
@@ -232,5 +255,9 @@ export class LoginPage implements OnInit {
     this.responsavelService.getAll().subscribe((res) => {
       this.store.dispatch(AddResponsavel(res));
     });
+  }
+
+  private set(key: string, value: any) {
+    this._storage?.set(key, value);
   }
 }

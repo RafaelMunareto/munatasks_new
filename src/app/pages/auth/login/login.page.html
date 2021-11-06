@@ -1,17 +1,11 @@
 <ion-content padding>
   <ion-grid>
-    <ion-row class='ion-justify-content-center'>
-      <ion-col
-        size-xs='12'
-        size-sm='8'
-        size-md='6'
-        size-lg='4'
-        size-xl='3'
-      >
-        <div style='display:flex; justify-content: center; padding: 1rem;'>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size-xs="12" size-sm="8" size-md="6" size-lg="4" size-xl="3">
+        <div style="display: flex; justify-content: center; padding: 1rem">
           <ion-img
-            slot='center'
-            style='max-width: 50%;'
+            slot="center"
+            style="max-width: 50%"
             src="assets/icon/favicon.png"
           ></ion-img>
         </div>
@@ -21,39 +15,38 @@
           class="ion-padding"
           (submit)="onSubmit(authProviders.Email)"
         >
-
-          <ng-container *ngIf='!configs.isSignIn'>
+          <ng-container *ngIf="!configs.isSignIn">
             <app-input-icon-valild
               ngDefaultControl
-              name='name'
-              [form]='authForm'
-              autocomplete='on'
-              [autofocus]='true'
+              name="name"
+              [form]="authForm"
+              autocomplete="on"
+              [autofocus]="true"
             ></app-input-icon-valild>
           </ng-container>
 
           <app-input-icon-valild
             ngDefaultControl
-            name='email'
-            [form]='authForm'
-            autocomplete='on'
-            [autofocus]='true'
+            name="email"
+            [form]="authForm"
+            autocomplete="on"
+            [autofocus]="true"
           ></app-input-icon-valild>
 
           <app-input-icon-valild
             ngDefaultControl
-            name='password'
-            [form]='authForm'
-            autocomplete='on'
-            [autofocus]='true'
+            name="password"
+            [form]="authForm"
+            autocomplete="on"
+            [autofocus]="true"
           ></app-input-icon-valild>
 
-          <ng-container *ngIf='!configs.isSignIn'>
+          <ng-container *ngIf="!configs.isSignIn">
             <app-input-icon-valild
               ngDefaultControl
-              name='confirmPassword'
-              [form]='authForm'
-              [autofocus]='true'
+              name="confirmPassword"
+              [form]="authForm"
+              [autofocus]="true"
             ></app-input-icon-valild>
           </ng-container>
 
@@ -66,93 +59,71 @@
           </ion-button>
           <div class="d-flex justify-content-end padding-right-05">
             <ion-text
-              slot='end'
-              color='primary'
-              class='forget-password'
+              slot="end"
+              color="primary"
+              class="forget-password"
               routerLink="password"
               routerDirection="forward"
             >
               Esqueceu a senha?
             </ion-text>
-
           </div>
         </form>
         <ion-button
           expand="block"
           fill="clear"
-          class='bold'
+          class="bold"
           (click)="changeAuthAction()"
         >
           {{ configs.actionChange }}
         </ion-button>
 
-        <ion-item *ngIf='this.currentPlatformService.isDevice'>
-          <ion-label>Cadastrar login e senha para digital</ion-label>
-          <ion-toggle (ionChange)="setCredential($event)"></ion-toggle>
-        </ion-item>
+        <div class="social_bay" *ngIf="this.currentPlatformService.isDevice">
+          <ul>
+            <li class="digital_icon" (click)="checkCredential()"></li>
+            <!-- <li class="google_icon"></li> -->
+          </ul>
+        </div>
 
-        <ion-button (click)="checkCredential(authProviders.Email)"
+        <!-- <ion-button
+          (click)="checkCredential()"
           expand="block"
           class="ion-text-start"
-          color='medium'
-          *ngIf='this.currentPlatformService.isDevice'
+          color="medium"
+          *ngIf="this.currentPlatformService.isDevice"
         >
-        Login com digital
-        <ion-icon name="finger-print-outline" slot='start'></ion-icon>
-        </ion-button>
+          Login com digital
+          <ion-icon name="finger-print-outline" slot="start"></ion-icon>
+        </ion-button> -->
 
-
-        <ion-button
-        (click)="deleteCredential()"
-        expand="block"
-        class="ion-text-left"
-        color='medium'
-        *ngIf='this.currentPlatformService.isDevice'
-        >
-        <ion-icon name="finger-print-outline" slot='start'></ion-icon>
-
-        Deletar login Digital
-        </ion-button>
-
-        <ion-button
+        <!-- <ion-button
           expand="block"
           class="ion-text-start"
-          color='primary'
+          color="primary"
           (click)="onSubmit(authProviders.Facebook)"
         >
-          <ion-icon
-            name="logo-facebook"
-            slot="start"
-          ></ion-icon>
+          <ion-icon name="logo-facebook" slot="start"></ion-icon>
           Login com Facebook
         </ion-button>
         <ion-button
           expand="block"
           class="ion-text-start"
-          color='danger'
+          color="danger"
           (click)="onSubmit(authProviders.Google)"
         >
-          <ion-icon
-            name="logo-google"
-            slot="start"
-          ></ion-icon>
+          <ion-icon name="logo-google" slot="start"></ion-icon>
           Login com Google
         </ion-button>
         <ion-button
           expand="block"
           class="ion-text-start"
-          color='secondary'
+          color="secondary"
           (click)="onSubmit(authProviders.Twitter)"
         >
-          <ion-icon
-            name="logo-twitter"
-            slot="start"
-          ></ion-icon>
+          <ion-icon name="logo-twitter" slot="start"></ion-icon>
           Login com Twitter
-        </ion-button>
-
+        </ion-button> -->
       </ion-col>
     </ion-row>
   </ion-grid>
-
 </ion-content>

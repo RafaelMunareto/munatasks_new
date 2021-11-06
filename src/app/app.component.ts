@@ -3,8 +3,7 @@ import { Component } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { environment } from 'src/environments/environment.prod';
 import { CurrentPlatformService } from './shared/services/current-plataform.service';
-import { AppVersion } from '@ionic-native/app-version/ngx';
-import { first, map, take, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -22,19 +21,18 @@ export class AppComponent {
     private firebase: AngularFirestore,
     public currentPlatformService: CurrentPlatformService
   ) {
-
     this.initializeApp();
   }
 
   initializeApp() {
-
-    this.firebase.collection('atualizacao')
-    .valueChanges()
-    .pipe(map((r: any) => r[0].versao))
-    .subscribe((res: any) => {
-      this.versao = res;
-      console.log(this.versaoAtual, res);
-    });
+    this.firebase
+      .collection('atualizacao')
+      .valueChanges()
+      .pipe(map((r: any) => r[0].versao))
+      .subscribe((res: any) => {
+        this.versao = res;
+        console.log(this.versaoAtual, res);
+      });
 
     this.authService.authState$.subscribe((user) => {
       this.user = user;
@@ -73,6 +71,4 @@ export class AppComponent {
       },
     ];
   }
-
-
 }

@@ -1,4 +1,7 @@
-import { AddSelectionEtiqueta } from './../../../../core/ngrx/actions/action-types';
+import {
+  AddSelectionEtiqueta,
+  ClearTasks,
+} from './../../../../core/ngrx/actions/action-types';
 /* eslint-disable @typescript-eslint/no-shadow */
 import {
   AddSelectionResponsavel,
@@ -28,7 +31,7 @@ export class TasksListPage {
   //tarefas
   tasks: any[] = [];
   filteredTasks: any[] = [];
-
+  tasksBd: any[] = [];
   //outros
   filtro;
   color;
@@ -61,11 +64,11 @@ export class TasksListPage {
     public nt: Notifications
   ) {
     this.createForm();
-    this.storeAction();
   }
 
   async ionViewDidEnter(): Promise<void> {
     this.actionEtiquetasResponsaveis();
+    this.storeAction();
   }
 
   filterTasks(): void {
@@ -247,7 +250,11 @@ export class TasksListPage {
   }
 
   private storeAction() {
-    this.store.pipe(select('selectBox')).subscribe((res: any) => {
+    this.store.pipe(select('selectBox')).subscribe(async (res: any) => {
+      await this.tasksService.getAll().subscribe((res) => {
+        this.store.dispatch(ClearTasks());
+        this.store.dispatch(AddTasks(res));
+      });
       this.faseParam = res.fase;
       this.etiquetaParam = res.etiqueta;
       this.responsavelParam = res.responsavel;

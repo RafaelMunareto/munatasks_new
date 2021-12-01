@@ -10,8 +10,9 @@ import { select, Store } from '@ngrx/store';
 import { filter, take } from 'rxjs/operators';
 
 import {
-  AddSelectionFase,
+  AddSelectionFase, AddTasks, ClearTasks,
 } from './../../../core/ngrx/actions/action-types';
+import { TasksService } from 'src/app/pages/dashboard/tasks/services/tasks.service';
 
 @Component({
   selector: 'app-segment-button',
@@ -23,6 +24,7 @@ export class SegmentButtonComponent implements OnInit{
   fase = 'home';
   etiqueta;
   constructor(
+    private tasksService: TasksService,
     private navCtrl: NavController,
     private store: Store<any>,
     private router: Router,

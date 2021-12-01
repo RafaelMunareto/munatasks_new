@@ -3,6 +3,7 @@
 import {
   AddSelectionFase,
   AddTasks,
+  ClearTasks,
 } from './../../../../core/ngrx/actions/action-types';
 import { ModalController, NavController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
@@ -99,13 +100,19 @@ export class TaskSavePage implements OnInit {
           id: this.taskId,
           ...this.taskForm.value,
         });
-        this.store.dispatch(AddTasks([newTask]));
+        await  this.tasksService.getAll().subscribe((res) => {
+          this.store.dispatch(ClearTasks());
+          this.store.dispatch(AddTasks(res));
+        });
         this.navCtrl.back();
       } else {
         const newTask = await this.tasksService.create({
           ...this.taskForm.value,
         });
-        this.store.dispatch(AddTasks([newTask]));
+        await this.tasksService.getAll().subscribe((res) => {
+          this.store.dispatch(ClearTasks());
+          this.store.dispatch(AddTasks(res));
+        });
         this.navCtrl.navigateBack(`/tasks`);
       }
     } catch (error) {
